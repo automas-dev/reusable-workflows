@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  test_setup_python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: twh2898/reusable-workflows/setup_python@main
+        with:
+          python_version: 3.11
+
+  increment_version:
+    name: Increment Version
+    uses: twh2898/reusable-workflows/.github/workflows/increment_version.yml@main
+    if: github.ref == 'refs/heads/main'
+    secrets: inherit
+
+    needs: [test_setup_python]
+
+    permissions:
+      contents: write
