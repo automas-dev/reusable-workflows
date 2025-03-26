@@ -1,5 +1,5 @@
-name: "Increment Version"
-description: "Increment semantic version and create a new tag"
+name: "Setup Python"
+description: "Install python and poetry"
 
 inputs:
   python-version:
