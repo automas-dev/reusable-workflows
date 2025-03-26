@@ -11,6 +11,7 @@ on:
 
 jobs:
   test_setup_python:
+    name: Test Setup Python Action
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +22,7 @@ jobs:
           python_version: 3.11
 
   increment_version:
+    name: Increment Version
     uses: twh2898/reusable-workflows/.github/workflows/increment_version.yml@main
     if: github.ref == 'refs/heads/main'
     secrets: inherit
