@@ -17,7 +17,7 @@ jobs:
 
       - uses: twh2898/reusable-workflows/setup_python@main
         with:
-          python_version
+          python_version: 3.11
 
   test_inc_ver_action:
     runs-on: ubuntu-latest
