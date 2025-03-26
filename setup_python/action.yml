@@ -1,0 +1,25 @@
+name: "Increment Version"
+description: "Increment semantic version and create a new tag"
+
+inputs:
+  python-version:
+    description: "Python version to install"
+    required: true
+    default: "3.13"
+  poetry-version:
+    description: "Poetry version to install"
+    required: true
+    default: "1.8.5"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v3
+      with:
+        poetry-version: ${{ inputs.poetry-version }}

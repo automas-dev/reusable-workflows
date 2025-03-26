@@ -9,6 +9,16 @@ jobs:
     permissions:
       contents: write
 
+  test_setup_python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: twh2898/reusable-workflows/setup_python@main
+        with:
+          python_version
+
   test_inc_ver_action:
     runs-on: ubuntu-latest
 
