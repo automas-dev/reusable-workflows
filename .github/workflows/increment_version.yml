@@ -1,12 +1,10 @@
 on:
   workflow_call:
     inputs:
-      config-path:
-        required: true
+      tag_prefix:
+        required: false
         type: string
-    secrets:
-      personal_access_token:
-        required: true
+        default: ""
 
 jobs:
   increment_version:
@@ -33,6 +31,6 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ steps.version.outputs.version }}',
+              ref: 'refs/tags/${{ inputs.tag_prefix }}${{ steps.version.outputs.version }}',
               sha: context.sha
             })
