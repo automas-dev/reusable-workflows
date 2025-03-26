@@ -1,10 +1,10 @@
 on:
   workflow_call:
     inputs:
-      tag_prefix:
+      create-tag:
         required: false
-        type: string
-        default: ""
+        type: bool
+        default: true
     outputs:
       new_version:
         description: "The new version number"
@@ -35,3 +35,5 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: ./increment_version
+        with:
+          create-tag: ${{ inputs.create-tag }}

@@ -5,6 +5,8 @@ jobs:
   test_inc_ver_workflow:
     uses: twh2898/reusable-workflows/.github/workflows/increment_version.yml@main
     secrets: inherit
+    with:
+      create-tag: false
 
     permissions:
       contents: write
@@ -31,3 +33,5 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: twh2898/reusable-workflows/increment_version@main
+        with:
+          create-tag: false

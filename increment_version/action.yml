@@ -1,6 +1,12 @@
 name: "Increment Version"
 description: "Increment semantic version and create a new tag"
 
+inputs:
+  create-tag:
+    description: "Create a tag with the new version"
+    required: false
+    default: true
+
 outputs:
   current-version:
     description: "The current version"
@@ -20,7 +26,7 @@ runs:
 
     - name: Create tag
       uses: actions/github-script@v5
-      if: "!contains(github.event.head_commit.message, 'NO RELEASE')"
+      if: "inputs.create-tag && !contains(github.event.head_commit.message, 'NO RELEASE')"
       with:
         script: |
           github.rest.git.createRef({
