@@ -4,8 +4,6 @@ on:
 jobs:
   test_inc_ver_workflow:
     uses: twh2898/reusable-workflows/.github/workflows/increment_version.yml@main
-    with:
-      config-path: .github/labeler.yml
     secrets: inherit
 
   test_inc_ver_action:
