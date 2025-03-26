@@ -3,7 +3,7 @@ on:
     inputs:
       create-tag:
         required: false
-        type: bool
+        type: boolean
         default: true
     outputs:
       new_version:
