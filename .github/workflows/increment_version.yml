@@ -28,6 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./increment_version
+      - uses: twh2898/reusable-workflows/increment_version@main
         with:
           create-tag: ${{ inputs.create-tag }}
