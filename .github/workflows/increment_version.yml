@@ -6,12 +6,6 @@ on:
         type: boolean
         default: true
     outputs:
-      new_version:
-        description: "The new version number"
-        value: ${{ jobs.increment_version.outputs.version }}
-      new_tag:
-        description: "The new tag, version including tag_prefix"
-        value: ${{ jobs.increment_version.outputs.tag }}
       current-version:
         description: "The current version"
         value: ${{ jobs.increment_version.outputs.current-version }}
