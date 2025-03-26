@@ -11,7 +11,7 @@ on:
 
 jobs:
   test_setup_python:
-    name: Test Setup Python
+    name: Test Setup Python Action
     runs-on: ubuntu-latest
 
     steps:
