@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: twh2898/reusable-workflows/increment_version@main
+      - uses: automas-dev/reusable-workflows/increment_version@main
 ```
 
 ### Workflow
@@ -33,7 +33,7 @@ on:
 
 jobs:
   increment_version:
-    uses: twh2898/reusable-workflows/.github/workflows/increment_version.yml@main
+    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
     secrets: inherit
 
     permissions:
@@ -42,7 +42,7 @@ jobs:
 
 ## Increment Version (workflow)
 
-Uses: `twh2898/reusable-workflows/.github/workflows/increment_version.yml@main`
+Uses: `automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main`
 
 ### Inputs
 
@@ -59,7 +59,7 @@ Uses: `twh2898/reusable-workflows/.github/workflows/increment_version.yml@main`
 
 ## Increment Version (action)
 
-Uses: `twh2898/reusable-workflows/increment_version@main`
+Uses: `automas-dev/reusable-workflows/increment_version@main`
 
 ### Inputs
 
@@ -76,7 +76,7 @@ Uses: `twh2898/reusable-workflows/increment_version@main`
 
 ## Setup Python
 
-Uses: `twh2898/reusable-workflows/setup_python@main`
+Uses: `automas-dev/reusable-workflows/setup_python@main`
 
 ### Inputs
 
