@@ -50,6 +50,8 @@ See [reecetech/version-increment](https://github.com/reecetech/version-increment
 > - minor: feat
 > - major: any of the above keywords followed by a '!' character, or 'BREAKING CHANGE:' in commit body
 
+To stop this workflow from running, include `NO RELEASE` in the commit message.
+
 ### Inputs
 
 | Name         | Required | Default | Description                       |
