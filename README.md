@@ -44,6 +44,14 @@ jobs:
 
 Uses: `automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main`
 
+See [reecetech/version-increment](https://github.com/reecetech/version-increment?tab=readme-ov-file#conventional-commits-semver-with-smarts-) for usage.
+
+> - patch: build, chore, ci, docs, fix, perf, refactor, revert, style, test
+> - minor: feat
+> - major: any of the above keywords followed by a '!' character, or 'BREAKING CHANGE:' in commit body
+
+To stop this workflow from running, include `NO RELEASE` in the commit message.
+
 ### Inputs
 
 | Name         | Required | Default | Description                       |
