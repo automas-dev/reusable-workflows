@@ -16,12 +16,12 @@ runs:
   steps:
     - name: Create tag
       uses: actions/github-script@v5
-      if: "input.ignore-no-release || !contains(github.event.head_commit.message, 'NO RELEASE')"
+      if: "inputs.ignore-no-release || !contains(github.event.head_commit.message, 'NO RELEASE')"
       with:
         script: |
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: 'refs/tags/${{ input.tag }}',
+            ref: 'refs/tags/${{ inputs.tag }}',
             sha: context.sha
           })
