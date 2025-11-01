@@ -100,7 +100,7 @@ until after steps that need the new version but may fail before tag creation.
 | `tag`               | true     |         | Tag value                                          |
 | `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
-## Setup Python
+## Setup Python (action)
 
 Uses: `automas-dev/reusable-workflows/setup_python@main`
 
