@@ -32,7 +32,7 @@ runs:
 
     - name: Create tag
       uses: actions/github-script@v5
-      if: "inputs.create-tag && (ignore-no-release || !contains(github.event.head_commit.message, 'NO RELEASE'))"
+      if: "inputs.create-tag && (input.ignore-no-release || !contains(github.event.head_commit.message, 'NO RELEASE'))"
       with:
         script: |
           github.rest.git.createRef({
