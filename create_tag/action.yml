@@ -1,0 +1,27 @@
+name: "Increment Version"
+description: "Increment semantic version and create a new tag"
+
+inputs:
+  tag:
+    description: "Tag value"
+    required: true
+  ignore-no-release:
+    description: "Don't check for NO RELEASE to disable tag creation"
+    type: boolean
+    required: false
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create tag
+      uses: actions/github-script@v5
+      if: "ignore-no-release || !contains(github.event.head_commit.message, 'NO RELEASE')"
+      with:
+        script: |
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'refs/tags/${{ input.tag }}',
+            sha: context.sha
+          })

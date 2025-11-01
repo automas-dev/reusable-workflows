@@ -2,9 +2,16 @@ on:
   workflow_call:
     inputs:
       create-tag:
-        required: false
+        description: "Create a tag with the new version"
         type: boolean
+        required: false
         default: true
+      ignore-no-release:
+        description: "Don't check for NO RELEASE to disable tag creation"
+        type: boolean
+        required: false
+        default: false
+
     outputs:
       current-version:
         description: "The current version"
@@ -31,3 +38,4 @@ jobs:
       - uses: automas-dev/reusable-workflows/increment_version@main
         with:
           create-tag: ${{ inputs.create-tag }}
+          ignore-no-release: ${{ inputs.ignore-no-release }}

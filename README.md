@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: automas-dev/reusable-workflows/increment_version@main
+
 ```
 
 ### Workflow
@@ -54,9 +55,10 @@ To stop this workflow from running, include `NO RELEASE` in the commit message.
 
 ### Inputs
 
-| Name         | Required | Default | Description                       |
-| ------------ | -------- | ------- | --------------------------------- |
-| `create-tag` | false    | true    | Create a tag with the new version |
+| Name                | Required | Default | Description                                        |
+| ------------------- | -------- | ------- | -------------------------------------------------- |
+| `create-tag`        | false    | true    | Create a tag with the new version                  |
+| `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
 ### Outputs
 
@@ -71,9 +73,10 @@ Uses: `automas-dev/reusable-workflows/increment_version@main`
 
 ### Inputs
 
-| Name         | Required | Default | Description                       |
-| ------------ | -------- | ------- | --------------------------------- |
-| `create-tag` | false    | true    | Create a tag with the new version |
+| Name                | Required | Default | Description                                        |
+| ------------------- | -------- | ------- | -------------------------------------------------- |
+| `create-tag`        | false    | true    | Create a tag with the new version                  |
+| `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
 ### Outputs
 
@@ -81,6 +84,21 @@ Uses: `automas-dev/reusable-workflows/increment_version@main`
 | ----------------- | ------------------- |
 | `current-version` | The current version |
 | `version`         | The new version     |
+
+## Create Tag (action)
+
+Uses: `automas-dev/reusable-workflows/create_tag@main`
+
+If `increment-version` is used with `create-tags: false`, this action can be
+used to create the version tag. This allows a workflow to delay tag creation
+until after steps that need the new version but may fail before tag creation.
+
+### Inputs
+
+| Name                | Required | Default | Description                                        |
+| ------------------- | -------- | ------- | -------------------------------------------------- |
+| `tag`               | true     |         | Tag value                                          |
+| `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
 ## Setup Python
 
