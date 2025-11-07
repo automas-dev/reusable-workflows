@@ -58,7 +58,6 @@ To stop this workflow from running, include `NO RELEASE` in the commit message.
 | Name                | Required | Default | Description                                        |
 | ------------------- | -------- | ------- | -------------------------------------------------- |
 | `create-tag`        | false    | true    | Create a tag with the new version                  |
-| `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
 ### Outputs
 
@@ -76,7 +75,6 @@ Uses: `automas-dev/reusable-workflows/increment_version@main`
 | Name                | Required | Default | Description                                        |
 | ------------------- | -------- | ------- | -------------------------------------------------- |
 | `create-tag`        | false    | true    | Create a tag with the new version                  |
-| `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
 ### Outputs
 
@@ -98,7 +96,6 @@ until after steps that need the new version but may fail before tag creation.
 | Name                | Required | Default | Description                                        |
 | ------------------- | -------- | ------- | -------------------------------------------------- |
 | `tag`               | true     |         | Tag value                                          |
-| `ignore-no-release` | false    | false   | Don't check for NO RELEASE to disable tag creation |
 
 ## Setup Python (action)
 

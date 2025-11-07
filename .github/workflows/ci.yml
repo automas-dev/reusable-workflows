@@ -19,7 +19,7 @@ jobs:
 
       - uses: automas-dev/reusable-workflows/setup_python@main
         with:
-          python_version: 3.11
+          python-version: 3.11
 
   increment_version:
     name: Increment Version

@@ -7,11 +7,6 @@ inputs:
     type: boolean
     required: false
     default: true
-  ignore-no-release:
-    description: "Don't check for NO RELEASE to disable tag creation"
-    type: boolean
-    required: false
-    default: false
 
 outputs:
   current-version:
@@ -32,7 +27,7 @@ runs:
 
     - name: Create tag
       uses: actions/github-script@v5
-      if: "inputs.create-tag && (inputs.ignore-no-release || !contains(github.event.head_commit.message, 'NO RELEASE'))"
+      if: "inputs.create-tag && !contains(github.event.head_commit.message, 'NO RELEASE')"
       with:
         script: |
           github.rest.git.createRef({
