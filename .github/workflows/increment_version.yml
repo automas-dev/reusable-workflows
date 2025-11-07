@@ -6,11 +6,6 @@ on:
         type: boolean
         required: false
         default: true
-      ignore-no-release:
-        description: "Don't check for NO RELEASE to disable tag creation"
-        type: boolean
-        required: false
-        default: false
 
     outputs:
       current-version:
@@ -38,4 +33,3 @@ jobs:
       - uses: automas-dev/reusable-workflows/increment_version@main
         with:
           create-tag: ${{ inputs.create-tag }}
-          ignore-no-release: ${{ inputs.ignore-no-release }}
