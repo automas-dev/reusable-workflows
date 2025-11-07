@@ -1,6 +1,6 @@
 # Reusable GitHub Workflows
 
-## Usage
+## Example Usage
 
 ### Action
 
