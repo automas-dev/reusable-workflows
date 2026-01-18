@@ -156,8 +156,8 @@ jobs:
       contents: write
 ```
 
-### Versions
+### ~~Versions~~
 
-Previously versions other than main were specified as an exact version. With
-the updated `create-aliases` input of increment_version, workflow and action
-version aliases (eg. `v1` or `v1.3`) are available and recommended.
+~~Previously versions other than main were specified as an exact version. With~~
+~~the updated `create-aliases` input of increment_version, workflow and action~~
+~~version aliases (eg. `v1` or `v1.3`) are available and recommended.~~
