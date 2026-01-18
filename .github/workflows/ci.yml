@@ -47,8 +47,8 @@ jobs:
     uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
     if: ${{ github.ref == 'refs/heads/main' }}
     secrets: inherit
-    # with:
-    #   create-aliases: true
+    with:
+      create-aliases: true
 
     needs: [lint, test_setup_python]
 
