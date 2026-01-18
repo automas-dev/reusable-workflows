@@ -21,13 +21,34 @@ jobs:
         with:
           python-version: 3.11
 
+      - name: Test python install
+        run: python3 -c 'exit(0)'
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4 # hi
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install YAML Lint
+        run: pip install yamllint
+
+      - name: Run YAML Lint
+        run: yamllint -c yamllint.yml .
+
   increment_version:
     name: Increment Version
     uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
     if: ${{ github.ref == 'refs/heads/main' }}
     secrets: inherit
 
-    needs: [test_setup_python]
+    needs: [lint, test_setup_python]
 
     permissions:
       contents: write
