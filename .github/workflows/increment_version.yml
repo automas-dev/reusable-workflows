@@ -30,6 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: automas-dev/reusable-workflows/increment_version@main
+      - id: version
+        uses: automas-dev/reusable-workflows/increment_version@main
         with:
           create-tag: ${{ inputs.create-tag }}
