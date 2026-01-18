@@ -5,11 +5,11 @@ inputs:
   tag:
     description: "Tag value"
     required: true
-  create-aliases:
-    description: "Create / update alias tags for major and minor versions"
-    type: boolean
-    required: false
-    default: false
+  # create-aliases:
+  #   description: "Create / update alias tags for major and minor versions"
+  #   type: boolean
+  #   required: false
+  #   default: false
 
 runs:
   using: "composite"
@@ -26,44 +26,44 @@ runs:
             sha: context.sha
           })
 
-    - name: Create Major / Minor Alias Tags
-      uses: actions/github-script@v5
-      if: ${{ inputs.create-aliases == 'true' && !contains(github.event.head_commit.message, 'NO RELEASE') }}
-      with:
-        script: |
-          const version = '${{ inputs.tag }}';
-          if (!/([0-9]+\.){2}/.test(version)) {
-            throw new Error(`Invalid version ${version}`);
-          }
-          const [major, minor] = '${{ inputs.tag }}'.split('.', 2);
-          // Major version
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `refs/tags/v${major}`,
-            sha: context.sha
-          }).catch(err => {
-            if (err.status !== 422) throw err;
-            github.rest.git.updateRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/v${major}`,
-              sha: context.sha
-            });
-          })
+    # - name: Create Major / Minor Alias Tags
+    #   uses: actions/github-script@v5
+    #   if: ${{ inputs.create-aliases == 'true' && !contains(github.event.head_commit.message, 'NO RELEASE') }}
+    #   with:
+    #     script: |
+    #       const version = '${{ inputs.tag }}';
+    #       if (!/([0-9]+\.){2}/.test(version)) {
+    #         throw new Error(`Invalid version ${version}`);
+    #       }
+    #       const [major, minor] = '${{ inputs.tag }}'.split('.', 2);
+    #       // Major version
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: `refs/tags/v${major}`,
+    #         sha: context.sha
+    #       }).catch(err => {
+    #         if (err.status !== 422) throw err;
+    #         github.rest.git.updateRef({
+    #           owner: context.repo.owner,
+    #           repo: context.repo.repo,
+    #           ref: `refs/tags/v${major}`,
+    #           sha: context.sha
+    #         });
+    #       })
 
-          // Major.Minor version
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `refs/tags/v${major}.${minor}`,
-            sha: context.sha
-          }).catch(err => {
-            if (err.status !== 422) throw err;
-            github.rest.git.updateRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/v${major}.${minor}`,
-              sha: context.sha
-            });
-          })
+    #       // Major.Minor version
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: `refs/tags/v${major}.${minor}`,
+    #         sha: context.sha
+    #       }).catch(err => {
+    #         if (err.status !== 422) throw err;
+    #         github.rest.git.updateRef({
+    #           owner: context.repo.owner,
+    #           repo: context.repo.repo,
+    #           ref: `refs/tags/v${major}.${minor}`,
+    #           sha: context.sha
+    #         });
+    #       })
