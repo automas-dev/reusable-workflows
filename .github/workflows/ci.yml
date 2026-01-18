@@ -24,7 +24,7 @@ jobs:
   increment_version:
     name: Increment Version
     uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.ref == 'refs/heads/main' }}
     secrets: inherit
 
     needs: [test_setup_python]

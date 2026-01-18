@@ -27,6 +27,6 @@ runs:
 
     - name: Create tag
       uses: automas-dev/reusable-workflows/create_tag@main
-      if: "inputs.create-tag"
+      if:  ${{ inputs.create-tag }}
       with:
         tag: ${{ steps.version.outputs.version }}
