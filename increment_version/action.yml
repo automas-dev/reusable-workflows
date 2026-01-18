@@ -26,13 +26,7 @@ runs:
         scheme: conventional_commits
 
     - name: Create tag
-      uses: actions/github-script@v5
-      if: "inputs.create-tag && !contains(github.event.head_commit.message, 'NO RELEASE')"
+      uses: automas-dev/reusable-workflows/create_tag@main
+      if: inputs.create-tag
       with:
-        script: |
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: 'refs/tags/${{ steps.version.outputs.version }}',
-            sha: context.sha
-          })
+        tag: ${{ steps.version.outputs.version }}
