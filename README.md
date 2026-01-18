@@ -131,7 +131,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: automas-dev/reusable-workflows/increment_version@v0.1
+      - uses: automas-dev/reusable-workflows/increment_version@main
 
 ```
 
@@ -149,7 +149,7 @@ on:
 
 jobs:
   increment_version:
-    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@v0.1
+    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
     secrets: inherit
 
     permissions:
