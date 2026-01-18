@@ -6,11 +6,11 @@ on:
         type: boolean
         required: false
         default: true
-      create-aliases:
-        description: "Create / update alias tags for major and minor versions"
-        type: boolean
-        required: false
-        default: false
+      # create-aliases:
+      #   description: "Create / update alias tags for major and minor versions"
+      #   type: boolean
+      #   required: false
+      #   default: false
 
     outputs:
       current-version:
@@ -39,4 +39,4 @@ jobs:
         uses: automas-dev/reusable-workflows/increment_version@main
         with:
           create-tag: ${{ inputs.create-tag }}
-          create-aliases: ${{ inputs.create-aliases }}
+          # create-aliases: ${{ inputs.create-aliases }}

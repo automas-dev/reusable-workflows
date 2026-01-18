@@ -7,11 +7,11 @@ inputs:
     type: boolean
     required: false
     default: true
-  create-aliases:
-    description: "Create / update alias tags for major and minor versions"
-    type: boolean
-    required: false
-    default: false
+  # create-aliases:
+  #   description: "Create / update alias tags for major and minor versions"
+  #   type: boolean
+  #   required: false
+  #   default: false
 
 outputs:
   current-version:
@@ -36,4 +36,4 @@ runs:
       if: ${{ inputs.create-tag == 'true' }}
       with:
         tag: ${{ steps.version.outputs.version }}
-        create-aliases: ${{ inputs.create-aliases }}
+        # create-aliases: ${{ inputs.create-aliases }}
