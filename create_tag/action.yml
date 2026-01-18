@@ -47,7 +47,7 @@ runs:
             github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `tags/v${major}`,
+              ref: `refs/tags/v${major}`,
               sha: context.sha
             });
           })
@@ -63,7 +63,7 @@ runs:
             github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `tags/v${major}.${minor}`,
+              ref: `refs/tags/v${major}.${minor}`,
               sha: context.sha
             });
           })
