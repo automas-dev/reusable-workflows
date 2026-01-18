@@ -1,0 +1,9 @@
+extends: default
+
+rules:
+  document-start: disable
+  comments:
+    min-spaces-from-content: 1 # default is 2, vscode yaml formatter uses 1
+  line-length: disable
+  truthy:
+    check-keys: false # because workflow files start with "on:"
