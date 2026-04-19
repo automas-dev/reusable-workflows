@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: automas-dev/reusable-workflows/setup_python@main
         with:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4 # hi
+      - uses: actions/checkout@v5 # hi
 
       - name: Install Python
         uses: actions/setup-python@v5
