@@ -129,7 +129,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: automas-dev/reusable-workflows/increment_version@main
 
