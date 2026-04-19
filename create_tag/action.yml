@@ -15,7 +15,7 @@ runs:
   using: "composite"
   steps:
     - name: Create Version Tag
-      uses: actions/github-script@v5
+      uses: actions/github-script@v9
       if: ${{ !contains(github.event.head_commit.message, 'NO RELEASE') }}
       with:
         script: |
@@ -27,7 +27,7 @@ runs:
           })
 
     # - name: Create Major / Minor Alias Tags
-    #   uses: actions/github-script@v5
+    #   uses: actions/github-script@v9
     #   if: ${{ inputs.create-aliases == 'true' && !contains(github.event.head_commit.message, 'NO RELEASE') }}
     #   with:
     #     script: |
