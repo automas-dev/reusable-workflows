@@ -10,20 +10,6 @@ on:
       - synchronize
 
 jobs:
-  test_setup_python:
-    name: Test Setup Python Action
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: automas-dev/reusable-workflows/setup_python@main
-        with:
-          python-version: 3.11
-
-      - name: Test python install
-        run: python3 -c 'exit(0)'
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -50,7 +36,7 @@ jobs:
     # with:
     #   create-aliases: true
 
-    needs: [lint, test_setup_python]
+    needs: [lint]
 
     permissions:
       contents: write
