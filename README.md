@@ -103,6 +103,49 @@ This is a convenience wrapper of the `Increment Version` action.
 | `current-version` | The previous git tag |
 | `version`         | The new version      |
 
+### Terraform Deploy
+
+Uses: `automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml`
+
+Deploy terraform code. Optionally includes increment version. This requires
+the pull-request write permission.
+
+```yaml
+permissions:
+  contents: write
+  pull-requests: write
+```
+
+**Inputs**
+
+| Name                | Required | Default   | Description                                               |
+| ------------------- | -------- | --------- | --------------------------------------------------------- |
+| `tfstate-bucket`    | true     |           | R2 bucket name for tf state file type                     |
+| `account-id`        | true     |           | Cloudflare account id type                                |
+| `zone-id`           | false    |           | Cloudflare zone id type                                   |
+| `git-tag`           | false    |           | Git version tag type                                      |
+| `increment-version` | false    | true      | Increment version tag instead of using git-tag input type |
+| `working-directory` | false    | terraform | Location of terraform code type                           |
+
+**Secrets**
+
+| Name                 | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| `tfstate-access-key` | R2 bucket access key for tf state file type: string |
+| `tfstate-secret-key` | R2 bucket secret key for tf state file type: string |
+| `api-token`          | Cloudflare api token for deployment type: string    |
+
+**Outputs**
+
+These are the same outputs from increment_version. They will be populated
+regardless of the `increment-version` input and will not be altered by the
+`git-tag` input.
+
+| Name              | Description          |
+| ----------------- | -------------------- |
+| `current-version` | The previous git tag |
+| `version`         | The new version      |
+
 ## How to use actions and workflows
 
 Reusable actions and workflows are included using the github user / repo names
