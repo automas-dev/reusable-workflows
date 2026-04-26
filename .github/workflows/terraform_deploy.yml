@@ -1,0 +1,127 @@
+on:
+  workflow_call:
+    inputs:
+      account-id:
+        description: Cloudflare account id
+        type: string
+      tfstate-bucket:
+        description: R2 bucket name for tf state file
+        type: string
+      tfstate-access-key:
+        description: R2 bucket access key for tf state file
+        type: string
+      tfstate-secret-key:
+        description: R2 bucket secret key for tf state file
+        type: string
+      tfstate-file:
+        description: File in R2 bucket for tf state file
+        type: string
+        default: state.tfstate
+      api-token:
+        description: Cloudflare api token for deployment
+        type: string
+      zone-id:
+        description: Cloudflare zone id
+        type: string
+        required: false
+      git-tag:
+        description: Git version tag
+        type: string
+        required: false
+      increment-version:
+        description: Increment version tag instead of using git-tag input
+        type: boolean
+        required: false
+        default: true
+      working-directory:
+        description: Location of terraform code
+        type: string
+        required: false
+        default: terraform
+
+    outputs:
+      current-version:
+        description: The current version
+        value: ${{ jobs.tf.outputs.current-version }}
+      version:
+        description: The new version
+        value: ${{ jobs.tf.outputs.version }}
+
+jobs:
+  tf:
+    name: Terraform Deploy
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    outputs:
+      current-version: ${{ steps.version.outputs.current-version }}
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.14.8"
+
+      - name: Terraform Lint
+        run: terraform fmt -check
+        working-directory: terraform
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="bucket=$TFSTATE_BUCKET" \
+            -backend-config="access_key=$ACCESS_KEY" \
+            -backend-config="secret_key=$SECRET_KEY" \
+            -backend-config="endpoints={s3=\"https://${ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
+        working-directory: terraform
+        env:
+          TFSTATE_BUCKET: ${{ inputs.tfstate-bucket }}
+          ACCESS_KEY: ${{ inputs.tfstate-access-key }}
+          SECRET_KEY: ${{ inputs.tfstate-secret-key }}
+          ACCOUNT_ID: ${{ inputs.account-id }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: terraform
+
+      - name: Get next git tag
+        id: version
+        uses: automas-dev/reusable-workflows/increment_version@main
+        with:
+          create-tag: false
+
+      - name: Terraform Plan
+        run: terraform plan -out tfplan.out
+        working-directory: terraform
+        env:
+          TF_VAR_account_id: ${{ inputs.account-id }}
+          TF_VAR_zone_id: ${{ inputs.zone-id }}
+          TF_VAR_cloudflare_api_token: ${{ inputs.api-token }}
+          TF_VAR_git_tag: ${{ inputs.increment-version == 'true' &&
+            steps.version.outputs.version || inputs.git-tag }}
+
+      - name: Create Plan Comment
+        uses: borchero/terraform-plan-comment@v3.0.0
+        with:
+          token: ${{ github.token }}
+          planfile: tfplan.out
+          working-directory: terraform
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' &&
+          !contains(github.event.head_commit.message, 'NO RELEASE')
+        run: terraform apply -auto-approve tfplan.out
+        working-directory: terraform
+
+      - name: Create git version tag
+        if: inputs.increment-version == 'true' && github.ref == 'refs/heads/main' &&
+          !contains(github.event.head_commit.message, 'NO RELEASE')
+        uses: automas-dev/reusable-workflows/create_tag@main
+        with:
+          tag: ${{ steps.version.outputs.version }}
