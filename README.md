@@ -118,17 +118,22 @@ permissions:
 
 **Inputs**
 
-| Name                 | Required | Default   | Description                                                        |
-| -------------------- | -------- | --------- | ------------------------------------------------------------------ |
-| `account-id`         | true     |           | Cloudflare account id type: string                                 |
-| `tfstate-bucket`     | true     |           | R2 bucket name for tf state file type: string                      |
-| `tfstate-access-key` | true     |           | R2 bucket access key for tf state file type: string                |
-| `tfstate-secret-key` | true     |           | R2 bucket secret key for tf state file type: string                |
-| `api-token`          | true     |           | Cloudflare api token for deployment type: string                   |
-| `zone-id`            | false    |           | Cloudflare zone id type: string                                    |
-| `git-tag`            | false    |           | Git version tag type: string                                       |
-| `increment-version`  | false    | true      | Increment version tag instead of using git-tag input type: boolean |
-| `working-directory`  | false    | terraform | Location of terraform code type: string                            |
+| Name                | Required | Default   | Description                                               |
+| ------------------- | -------- | --------- | --------------------------------------------------------- |
+| `tfstate-bucket`    | true     |           | R2 bucket name for tf state file type                     |
+| `account-id`        | true     |           | Cloudflare account id type                                |
+| `zone-id`           | false    |           | Cloudflare zone id type                                   |
+| `git-tag`           | false    |           | Git version tag type                                      |
+| `increment-version` | false    | true      | Increment version tag instead of using git-tag input type |
+| `working-directory` | false    | terraform | Location of terraform code type                           |
+
+**Secrets**
+
+| Name                 | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| `tfstate-access-key` | R2 bucket access key for tf state file type: string |
+| `tfstate-secret-key` | R2 bucket secret key for tf state file type: string |
+| `api-token`          | Cloudflare api token for deployment type: string    |
 
 **Outputs**
 
