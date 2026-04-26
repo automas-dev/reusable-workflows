@@ -1,6 +1,9 @@
 on:
   workflow_call:
     inputs:
+      tfstate-bucket:
+        description: R2 bucket name for tf state file
+        type: string
       account-id:
         description: Cloudflare account id
         type: string
@@ -22,8 +25,6 @@ on:
         required: false
         default: terraform
     secrets:
-      tfstate-bucket:
-        description: R2 bucket name for tf state file
       tfstate-access-key:
         description: R2 bucket access key for tf state file
       tfstate-secret-key:
