@@ -114,7 +114,7 @@ jobs:
         working-directory: terraform
 
       - name: Create git version tag
-        if: inputs.increment-version == 'true' && github.ref == 'refs/heads/main' &&
+        if: inputs.increment-version && github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
         uses: automas-dev/reusable-workflows/create_tag@main
         with:
