@@ -13,10 +13,6 @@ on:
       tfstate-secret-key:
         description: R2 bucket secret key for tf state file
         type: string
-      tfstate-file:
-        description: File in R2 bucket for tf state file
-        type: string
-        default: state.tfstate
       api-token:
         description: Cloudflare api token for deployment
         type: string

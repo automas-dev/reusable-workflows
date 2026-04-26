@@ -124,7 +124,6 @@ permissions:
 | `tfstate-bucket`     | true     |           | R2 bucket name for tf state file type: string                      |
 | `tfstate-access-key` | true     |           | R2 bucket access key for tf state file type: string                |
 | `tfstate-secret-key` | true     |           | R2 bucket secret key for tf state file type: string                |
-| `tfstate-file`       | true     |           | File in R2 bucket for tf state file type: string                   |
 | `api-token`          | true     |           | Cloudflare api token for deployment type: string                   |
 | `zone-id`            | false    |           | Cloudflare zone id type: string                                    |
 | `git-tag`            | false    |           | Git version tag type: string                                       |
