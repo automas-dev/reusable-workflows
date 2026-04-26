@@ -57,10 +57,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - run: echo $TK
-        env:
-          TK: ${{ inputs.tfstate-bucket }}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
@@ -79,7 +75,7 @@ jobs:
             -backend-config="endpoints={s3=\"https://${ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
         working-directory: terraform
         env:
-          TFSTATE_BUCKET: ${{ secrets.tfstate-bucket }}
+          TFSTATE_BUCKET: ${{ inputs.tfstate-bucket }}
           ACCESS_KEY: ${{ secrets.tfstate-access-key }}
           SECRET_KEY: ${{ secrets.tfstate-secret-key }}
           ACCOUNT_ID: ${{ inputs.account-id }}
