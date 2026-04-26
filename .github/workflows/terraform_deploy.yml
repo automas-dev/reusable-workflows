@@ -74,9 +74,9 @@ jobs:
             -backend-config="endpoints={s3=\"https://${ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
         working-directory: terraform
         env:
-          TFSTATE_BUCKET: ${{ inputs.tfstate-bucket }}
-          ACCESS_KEY: ${{ inputs.tfstate-access-key }}
-          SECRET_KEY: ${{ inputs.tfstate-secret-key }}
+          TFSTATE_BUCKET: ${{ secrets.tfstate-bucket }}
+          ACCESS_KEY: ${{ secrets.tfstate-access-key }}
+          SECRET_KEY: ${{ secrets.tfstate-secret-key }}
           ACCOUNT_ID: ${{ inputs.account-id }}
 
       - name: Terraform Validate
@@ -95,7 +95,7 @@ jobs:
         env:
           TF_VAR_account_id: ${{ inputs.account-id }}
           TF_VAR_zone_id: ${{ inputs.zone-id }}
-          TF_VAR_cloudflare_api_token: ${{ inputs.api-token }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.api-token }}
           TF_VAR_git_tag: ${{ inputs.increment-version == 'true' &&
             steps.version.outputs.version || inputs.git-tag }}
 
