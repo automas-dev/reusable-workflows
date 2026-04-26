@@ -97,8 +97,8 @@ jobs:
           TF_VAR_account_id: ${{ inputs.account-id }}
           TF_VAR_zone_id: ${{ inputs.zone-id }}
           TF_VAR_cloudflare_api_token: ${{ secrets.api-token }}
-          TF_VAR_git_tag: ${{ inputs.increment-version == 'true' &&
-            steps.version.outputs.version || inputs.git-tag }}
+          TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
+            inputs.git-tag }}
 
       - name: Create Plan Comment
         uses: borchero/terraform-plan-comment@v3.0.0
@@ -114,7 +114,7 @@ jobs:
         working-directory: terraform
 
       - name: Create git version tag
-        if: inputs.increment-version == 'true' && github.ref == 'refs/heads/main' &&
+        if: inputs.increment-version && github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
         uses: automas-dev/reusable-workflows/create_tag@main
         with:
