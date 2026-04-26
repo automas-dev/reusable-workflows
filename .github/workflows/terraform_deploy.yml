@@ -57,9 +57,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - run: echo "Would increment"
-        if: inputs.increment-version
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
@@ -100,8 +97,8 @@ jobs:
           TF_VAR_account_id: ${{ inputs.account-id }}
           TF_VAR_zone_id: ${{ inputs.zone-id }}
           TF_VAR_cloudflare_api_token: ${{ secrets.api-token }}
-          TF_VAR_git_tag: ${{ inputs.increment-version == 'true' &&
-            steps.version.outputs.version || inputs.git-tag }}
+          TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
+            inputs.git-tag }}
 
       - name: Create Plan Comment
         uses: borchero/terraform-plan-comment@v3.0.0
