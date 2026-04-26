@@ -57,6 +57,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - run: echo "Would increment"
+        if: inputs.increment-version
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
