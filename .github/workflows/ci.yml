@@ -9,10 +9,6 @@ on:
       - reopened
       - synchronize
 
-env:
-  FOO: foo
-  BAR: bar
-
 jobs:
   lint:
     name: Lint
