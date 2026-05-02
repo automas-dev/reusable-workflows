@@ -1,15 +1,6 @@
 on:
   workflow_call:
     inputs:
-      tfstate-bucket:
-        description: R2 bucket name for tf state file
-        type: string
-      account-id:
-        description: Cloudflare account id
-        type: string
-      zone-id:
-        description: Cloudflare zone id
-        type: string
       git-tag:
         description: Git version tag
         type: string
@@ -24,14 +15,6 @@ on:
         type: string
         required: false
         default: terraform
-    secrets:
-      tfstate-access-key:
-        description: R2 bucket access key for tf state file
-      tfstate-secret-key:
-        description: R2 bucket secret key for tf state file
-      api-token:
-        description: Cloudflare api token for deployment
-        required: false
 
     outputs:
       current-version:
@@ -57,6 +40,38 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # See https://cloudchronicles.blog/blog/Passing-Environment-Secrets-and-Variables-to-Reusable-Workflows-in-GitHub-Actions/
+
+      - name: Export TF_VAR secrets
+        uses: actions/github-script@v8.0.0
+        env:
+          ALL_SECRETS: ${{ toJSON(secrets) }}
+        with:
+          script: |
+            const secrets = JSON.parse(process.env.ALL_SECRETS);
+            for (const [key, value] of Object.entries(secrets)) {
+              if (key.startsWith('TF_VAR_')) {
+                const exportKey = `TF_VAR_${key.slice('TF_VAR_'.length).toLowerCase()}`;
+                core.exportVariable(exportKey, value);
+                core.info(`Exported: ${key} as ${exportKey}`);
+              }
+            }
+
+      - name: Export TF_VAR vars
+        uses: actions/github-script@v8.0.0
+        env:
+          ALL_VARS: ${{ toJSON(vars) }}
+        with:
+          script: |
+            const vars = JSON.parse(process.env.ALL_VARS);
+            for (const [key, value] of Object.entries(vars)) {
+              if (key.startsWith('TF_VAR_')) {
+                const exportKey = `TF_VAR_${key.slice('TF_VAR_'.length).toLowerCase()}`;
+                core.exportVariable(exportKey, value);
+                core.info(`Exported: ${key} as ${exportKey}`);
+              }
+            }
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
@@ -69,16 +84,16 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-            -backend-config="bucket=$TFSTATE_BUCKET" \
+            -backend-config="bucket=$BUCKET" \
             -backend-config="access_key=$ACCESS_KEY" \
             -backend-config="secret_key=$SECRET_KEY" \
             -backend-config="endpoints={s3=\"https://${ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
         working-directory: terraform
         env:
-          TFSTATE_BUCKET: ${{ inputs.tfstate-bucket }}
-          ACCESS_KEY: ${{ secrets.tfstate-access-key }}
-          SECRET_KEY: ${{ secrets.tfstate-secret-key }}
-          ACCOUNT_ID: ${{ inputs.account-id }}
+          ACCOUNT_ID: ${{ vars.TFSTATE_ACCOUNT_ID }}
+          BUCKET: ${{ vars.TFSTATE_BUCKET }}
+          ACCESS_KEY: ${{ secrets.TFSTATE_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.TFSTATE_SECRET_KEY }}
 
       - name: Terraform Validate
         run: terraform validate
@@ -94,9 +109,6 @@ jobs:
         run: terraform plan -out tfplan.out
         working-directory: terraform
         env:
-          TF_VAR_account_id: ${{ inputs.account-id }}
-          TF_VAR_zone_id: ${{ inputs.zone-id }}
-          TF_VAR_cloudflare_api_token: ${{ secrets.api-token }}
           TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
             inputs.git-tag }}
 
