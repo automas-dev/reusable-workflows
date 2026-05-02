@@ -44,10 +44,3 @@ jobs:
 
     permissions:
       contents: write
-
-  test_stuff:
-    uses: automas-dev/reusable-workflows/.github/workflows/test_pass_vars.yml@tf_vars
-    secrets: inherit
-
-    permissions:
-      contents: write

@@ -107,13 +107,25 @@ This is a convenience wrapper of the `Increment Version` action.
 
 Uses: `automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml`
 
+This workflow needs to inherit secrets.
+
+```yaml
+jobs:
+  tf:
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@main
+    secrets: inherit
+```
+
 Deploy terraform code. Optionally includes increment version. This requires
 the pull-request write permission.
 
 ```yaml
-permissions:
-  contents: write
-  pull-requests: write
+jobs:
+  tf:
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
 ```
 
 **Inputs**
@@ -127,13 +139,24 @@ permissions:
 | `increment-version` | false    | true      | Increment version tag instead of using git-tag input type |
 | `working-directory` | false    | terraform | Location of terraform code type                           |
 
+**Variables**
+
+These vars need to be available in the github repo.
+
+| Name                 | Description                         |
+| -------------------- | ----------------------------------- |
+| `TFSTATE_BUCKET`     | R2 bucket name                      |
+| `TFSTATE_ACCOUNT_ID` | Cloudflare account id for R2 bucket |
+
 **Secrets**
 
-| Name                 | Description                                         |
-| -------------------- | --------------------------------------------------- |
-| `tfstate-access-key` | R2 bucket access key for tf state file type: string |
-| `tfstate-secret-key` | R2 bucket secret key for tf state file type: string |
-| `api-token`          | Cloudflare api token for deployment type: string    |
+These secrets need to be available in the github repo.
+
+| Name                          | Description                            |
+| ----------------------------- | -------------------------------------- |
+| `TFSTATE_ACCESS_KEY`          | R2 bucket access key for tf state file |
+| `TFSTATE_SECRET_KEY`          | R2 bucket secret key for tf state file |
+| `TF_VAR_CLOUDFLARE_API_TOKEN` | Cloudflare api token for deployment    |
 
 **Outputs**
 
