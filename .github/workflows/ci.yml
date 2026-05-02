@@ -46,7 +46,7 @@ jobs:
       contents: write
 
   test_stuff:
-    uses: automas-dev/reusable-workflows/.github/workflows/test_pass_vars.yml@rf_vars
+    uses: automas-dev/reusable-workflows/.github/workflows/test_pass_vars.yml@tf_vars
     secrets: inherit
 
     permissions:
