@@ -1,15 +1,6 @@
 on:
   workflow_call:
     inputs:
-      tfstate-bucket:
-        description: R2 bucket name for tf state file
-        type: string
-      account-id:
-        description: Cloudflare account id
-        type: string
-      zone-id:
-        description: Cloudflare zone id
-        type: string
       git-tag:
         description: Git version tag
         type: string
@@ -24,14 +15,6 @@ on:
         type: string
         required: false
         default: terraform
-    secrets:
-      tfstate-access-key:
-        description: R2 bucket access key for tf state file
-      tfstate-secret-key:
-        description: R2 bucket secret key for tf state file
-      api-token:
-        description: Cloudflare api token for deployment
-        required: false
 
     outputs:
       current-version:
@@ -126,9 +109,6 @@ jobs:
         run: terraform plan -out tfplan.out
         working-directory: terraform
         env:
-          TF_VAR_account_id: ${{ inputs.account-id }}
-          TF_VAR_zone_id: ${{ inputs.zone-id }}
-          TF_VAR_cloudflare_api_token: ${{ secrets.api-token }}
           TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
             inputs.git-tag }}
 

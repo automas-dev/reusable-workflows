@@ -132,14 +132,11 @@ jobs:
 
 | Name                | Required | Default   | Description                                               |
 | ------------------- | -------- | --------- | --------------------------------------------------------- |
-| `tfstate-bucket`    | true     |           | R2 bucket name for tf state file type                     |
-| `account-id`        | true     |           | Cloudflare account id type                                |
-| `zone-id`           | false    |           | Cloudflare zone id type                                   |
 | `git-tag`           | false    |           | Git version tag type                                      |
 | `increment-version` | false    | true      | Increment version tag instead of using git-tag input type |
 | `working-directory` | false    | terraform | Location of terraform code type                           |
 
-**Variables**
+**Repo Variables**
 
 These vars need to be available in the github repo.
 
@@ -148,7 +145,7 @@ These vars need to be available in the github repo.
 | `TFSTATE_BUCKET`     | R2 bucket name                      |
 | `TFSTATE_ACCOUNT_ID` | Cloudflare account id for R2 bucket |
 
-**Secrets**
+**Repo Secrets**
 
 These secrets need to be available in the github repo.
 
