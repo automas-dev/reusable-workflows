@@ -15,10 +15,6 @@ on:
         type: string
         required: false
         default: terraform
-      tfstate-bucket:
-        description: R2 bucket name containing tf state file
-        type: string
-        required: false
 
     outputs:
       current-version:
@@ -95,8 +91,7 @@ jobs:
         working-directory: terraform
         env:
           ACCOUNT_ID: ${{ vars.TFSTATE_ACCOUNT_ID }}
-          BUCKET: ${{ inputs.tfstate-bucket && inputs.tfstate-bucket ||
-            vars.TFSTATE_BUCKET }}
+          BUCKET: ${{ vars.TFSTATE_BUCKET }}
           ACCESS_KEY: ${{ secrets.TFSTATE_ACCESS_KEY }}
           SECRET_KEY: ${{ secrets.TFSTATE_SECRET_KEY }}
 
