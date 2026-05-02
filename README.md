@@ -153,7 +153,6 @@ These secrets need to be available in the github repo.
 | ----------------------------- | -------------------------------------- |
 | `TFSTATE_ACCESS_KEY`          | R2 bucket access key for tf state file |
 | `TFSTATE_SECRET_KEY`          | R2 bucket secret key for tf state file |
-| `TF_VAR_CLOUDFLARE_API_TOKEN` | Cloudflare api token for deployment    |
 
 **Outputs**
 
