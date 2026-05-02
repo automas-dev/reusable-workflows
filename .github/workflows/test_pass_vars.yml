@@ -1,0 +1,15 @@
+on:
+  workflow_call:
+
+jobs:
+  tmp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - run: echo env got $BAR
+
+      - run: echo env got $FOO
+        env:
+          FOO: ${{ env.FOO }}

@@ -9,6 +9,10 @@ on:
       - reopened
       - synchronize
 
+env:
+  FOO: foo
+  BAR: bar
+
 jobs:
   lint:
     name: Lint
@@ -37,6 +41,13 @@ jobs:
     #   create-aliases: true
 
     needs: [lint]
+
+    permissions:
+      contents: write
+
+  test_stuff:
+    uses: automas-dev/reusable-workflows/.github/workflows/test_pass_vars.yml@rf_vars
+    secrets: inherit
 
     permissions:
       contents: write
