@@ -13,3 +13,7 @@ jobs:
       - run: echo env got $FOO
         env:
           FOO: ${{ env.FOO }}
+
+      - run: echo env got $VAR_FOO
+        env:
+          FOO: ${{ vars.VAR_FOO }}
