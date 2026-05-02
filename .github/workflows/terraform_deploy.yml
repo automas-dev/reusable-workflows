@@ -40,38 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # See https://cloudchronicles.blog/blog/Passing-Environment-Secrets-and-Variables-to-Reusable-Workflows-in-GitHub-Actions/
-
-      - name: Export TF_VAR secrets
-        uses: actions/github-script@v8.0.0
-        env:
-          ALL_SECRETS: ${{ toJSON(secrets) }}
-        with:
-          script: |
-            const secrets = JSON.parse(process.env.ALL_SECRETS);
-            for (const [key, value] of Object.entries(secrets)) {
-              if (key.startsWith('TF_VAR_')) {
-                const exportKey = `TF_VAR_${key.slice('TF_VAR_'.length).toLowerCase()}`;
-                core.exportVariable(exportKey, value);
-                core.info(`Exported: ${key} as ${exportKey}`);
-              }
-            }
-
-      - name: Export TF_VAR vars
-        uses: actions/github-script@v8.0.0
-        env:
-          ALL_VARS: ${{ toJSON(vars) }}
-        with:
-          script: |
-            const vars = JSON.parse(process.env.ALL_VARS);
-            for (const [key, value] of Object.entries(vars)) {
-              if (key.startsWith('TF_VAR_')) {
-                const exportKey = `TF_VAR_${key.slice('TF_VAR_'.length).toLowerCase()}`;
-                core.exportVariable(exportKey, value);
-                core.info(`Exported: ${key} as ${exportKey}`);
-              }
-            }
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
@@ -104,6 +72,38 @@ jobs:
         uses: automas-dev/reusable-workflows/increment_version@main
         with:
           create-tag: false
+
+      # See https://cloudchronicles.blog/blog/Passing-Environment-Secrets-and-Variables-to-Reusable-Workflows-in-GitHub-Actions/
+
+      - name: Export TF_VAR secrets
+        uses: actions/github-script@v8.0.0
+        env:
+          ALL_SECRETS: ${{ toJSON(secrets) }}
+        with:
+          script: |
+            const secrets = JSON.parse(process.env.ALL_SECRETS);
+            for (const [key, value] of Object.entries(secrets)) {
+              if (key.startsWith('TF_VAR_')) {
+                const exportKey = `TF_VAR_${key.slice('TF_VAR_'.length).toLowerCase()}`;
+                core.exportVariable(exportKey, value);
+                core.info(`Exported: ${key} as ${exportKey}`);
+              }
+            }
+
+      - name: Export TF_VAR vars
+        uses: actions/github-script@v8.0.0
+        env:
+          ALL_VARS: ${{ toJSON(vars) }}
+        with:
+          script: |
+            const vars = JSON.parse(process.env.ALL_VARS);
+            for (const [key, value] of Object.entries(vars)) {
+              if (key.startsWith('TF_VAR_')) {
+                const exportKey = `TF_VAR_${key.slice('TF_VAR_'.length).toLowerCase()}`;
+                core.exportVariable(exportKey, value);
+                core.info(`Exported: ${key} as ${exportKey}`);
+              }
+            }
 
       - name: Terraform Plan
         run: terraform plan -out tfplan.out
