@@ -47,7 +47,7 @@ jobs:
 
       - name: Terraform Lint
         run: terraform fmt -check
-        working-directory: terraform
+        working-directory: ${{ inputs.working-directory }}
 
       - name: Terraform Init
         run: |
@@ -56,7 +56,7 @@ jobs:
             -backend-config="access_key=$ACCESS_KEY" \
             -backend-config="secret_key=$SECRET_KEY" \
             -backend-config="endpoints={s3=\"https://${ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
-        working-directory: terraform
+        working-directory: ${{ inputs.working-directory }}
         env:
           ACCOUNT_ID: ${{ vars.TFSTATE_ACCOUNT_ID }}
           BUCKET: ${{ vars.TFSTATE_BUCKET }}
@@ -65,7 +65,7 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: terraform
+        working-directory: ${{ inputs.working-directory }}
 
       - name: Get next git tag
         id: version
@@ -107,7 +107,7 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -out tfplan.out
-        working-directory: terraform
+        working-directory: ${{ inputs.working-directory }}
         env:
           TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
             inputs.git-tag }}
@@ -117,13 +117,13 @@ jobs:
         with:
           token: ${{ github.token }}
           planfile: tfplan.out
-          working-directory: terraform
+          working-directory: ${{ inputs.working-directory }}
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
         run: terraform apply -auto-approve tfplan.out
-        working-directory: terraform
+        working-directory: ${{ inputs.working-directory }}
 
       - name: Create git version tag
         if: inputs.increment-version && github.ref == 'refs/heads/main' &&
