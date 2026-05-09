@@ -122,7 +122,7 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
-        run: terraform apply -auto-approve tfplan.out -input=false
+        run: terraform apply -auto-approve tfplan.out
         working-directory: ${{ inputs.working-directory }}
 
       - name: Create git version tag
