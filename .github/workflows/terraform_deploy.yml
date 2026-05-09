@@ -106,7 +106,7 @@ jobs:
             }
 
       - name: Terraform Plan
-        run: terraform plan -out tfplan.out
+        run: terraform plan -out tfplan.out -input=false
         working-directory: ${{ inputs.working-directory }}
         env:
           TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
@@ -122,7 +122,7 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
-        run: terraform apply -auto-approve tfplan.out
+        run: terraform apply -auto-approve tfplan.out -input=false
         working-directory: ${{ inputs.working-directory }}
 
       - name: Create git version tag
