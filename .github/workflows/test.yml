@@ -26,15 +26,20 @@ jobs:
 
       - name: Create Version Tag
         uses: actions/github-script@v9
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         with:
           script: |
+            const version = process.env.VERSION;
+            console.log(`Got version ${version}`)
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ steps.version.outputs.version }}',
+              ref: `refs/tags/${version}`,
               sha: context.sha
             }).catch(err => {
               if (context.ref === 'refs/heads/main') throw err;
+              console.log(`Skipping creation of existing tag ${version}`)
             })
 
       - name: Create Major / Minor Alias Tags
