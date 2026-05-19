@@ -27,6 +27,7 @@ runs:
 
     - name: Create Major / Minor Alias Tags
       uses: actions/github-script@v9
+      if: ${{ inputs.create-aliases }}
       with:
         script: |
           const version = '${{ inputs.tag }}';
