@@ -21,56 +21,40 @@ inputs:
 outputs:
   current-version:
     description: The current version
-    value: ${{ steps.version.outputs.current-version }}
+    value: ${{ inputs.tag || steps.version.outputs.current-version }}
   version:
     description: The new version
-    value: ${{ steps.version.outputs.version }}
+    value: ${{ inputs.tag || steps.version.outputs.version }}
 
 runs:
   using: composite
   steps:
-    - name: bool
-      if: ${{ inputs.dry-run }}
+    - if: ${{ inputs.tag }}
       shell: bash
-      run: echo bool
-
-    - name: not bool
-      if: ${{ !inputs.dry-run }}
+      run: echo tag
+    - if: ${{ !inputs.tag }}
       shell: bash
-      run: echo not bool
-
-    - name: str equals
-      if: ${{ inputs.dry-run == 'true' }}
+      run: echo not tag
+    - if: ${{ inputs.tag == '' }}
       shell: bash
-      run: echo str equals
-
-    - name: str not equals
-      if: ${{ inputs.dry-run != 'true' }}
+      run: echo tag eq empty
+    - if: ${{ !inputs.tag != '' }}
       shell: bash
-      run: echo str not equals
+      run: echo not tag not eq empty
 
-    - name: bool equals
-      if: ${{ inputs.dry-run == true }}
-      shell: bash
-      run: echo bool equals
-
-    - name: bool not equals
-      if: ${{ inputs.dry-run != true }}
-      shell: bash
-      run: echo bool not equals
-
-    - name: Get next version
-      uses: reecetech/version-increment@2024.10.1
-      id: version
-      with:
-        scheme: conventional_commits
+    # - name: Get next version
+    #   uses: reecetech/version-increment@2024.10.1
+    #   if: ${{ !inputs.tag }}
+    #   id: version
+    #   with:
+    #     scheme: conventional_commits
 
     # - name: Create Version Tag
     #   uses: actions/github-script@v9
     #   # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
     #   if: ${{ inputs.dry-run != 'true' }}
     #   env:
-    #     VERSION: ${{ steps.version.outputs.version }}
+    #     VERSION: ${{ inputs.tag || steps.version.outputs.version }}
     #   with:
     #     script: |
     #       const version = process.env.VERSION;
@@ -88,9 +72,9 @@ runs:
 
     # - name: Create Major / Minor Alias Tags
     #   uses: actions/github-script@v9
-    #   if: ${{inputs.dry-run != 'true' &&  inputs.create-aliases }}
+    #   if: ${{inputs.dry-run != 'true' &&  inputs.create-aliases == 'true' }}
     #   env:
-    #     VERSION: ${{ steps.version.outputs.version }}
+    #     VERSION: ${{ inputs.tag || steps.version.outputs.version }}
     #   with:
     #     script: |
     #       const version = process.env.VERSION;
