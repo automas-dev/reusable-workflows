@@ -29,8 +29,33 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: one
+    - name: bool
       if: ${{ inputs.dry-run }}
+      shell: bash
+      run: echo hi
+
+    - name: not bool
+      if: ${{ !inputs.dry-run }}
+      shell: bash
+      run: echo hi
+
+    - name: str equals
+      if: ${{ inputs.dry-run == 'true' }}
+      shell: bash
+      run: echo hi
+
+    - name: str not equals
+      if: ${{ inputs.dry-run != 'true' }}
+      shell: bash
+      run: echo hi
+
+    - name: bool equals
+      if: ${{ inputs.dry-run == true }}
+      shell: bash
+      run: echo hi
+
+    - name: bool not equals
+      if: ${{ inputs.dry-run != true }}
       shell: bash
       run: echo hi
 
