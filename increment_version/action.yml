@@ -31,7 +31,7 @@ runs:
         scheme: conventional_commits
 
     - name: Create tag
-      uses: automas-dev/reusable-workflows/create_tag@alias
+      uses: automas-dev/reusable-workflows/create_tag@main
       # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
       if: ${{ inputs.create-tag == 'true' }}
       with:

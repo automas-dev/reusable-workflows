@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - id: version
-        uses: automas-dev/reusable-workflows/increment_version@alias
+        uses: automas-dev/reusable-workflows/increment_version@main
         with:
           create-tag: ${{ inputs.create-tag }}
           create-aliases: ${{ inputs.create-aliases }}
