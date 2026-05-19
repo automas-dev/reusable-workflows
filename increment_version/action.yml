@@ -38,6 +38,7 @@ runs:
 
     - name: Use explicit version
       if: ${{ inputs.tag }}
+      id: version
       run: echo "version=${{ inputs.tag }}" >> $GITHUB_OUTPUT
       shell: bash
 
