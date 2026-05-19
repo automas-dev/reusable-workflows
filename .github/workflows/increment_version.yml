@@ -1,18 +1,6 @@
 name: Increment Version
 
 on:
-  workflow_dispatch:
-    inputs:
-      create-tag:
-        description: "Create a tag with the new version"
-        type: boolean
-        required: false
-        default: true
-      create-aliases:
-        description: "Create / update alias tags for major and minor versions"
-        type: boolean
-        required: false
-        default: false
   workflow_call:
     inputs:
       create-tag:
