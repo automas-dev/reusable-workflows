@@ -21,7 +21,7 @@ inputs:
 outputs:
   current-version:
     description: The current version
-    value: ${{ inputs.tag || steps.version.outputs.current-version }}
+    value: ${{ steps.version.outputs.current-version }}
   version:
     description: The new version
     value: ${{ inputs.tag || steps.version.outputs.version }}
@@ -34,14 +34,6 @@ runs:
       id: version
       with:
         scheme: conventional_commits
-
-    - name: Use explicit version
-      id: output
-      if: ${{ inputs.tag }}
-      run: |
-        echo "current-version=${{ steps.version.outputs.current-version }}" >> $GITHUB_OUTPUT
-        echo "version=${{ inputs.tag || steps.version.outputs.version }}" >> $GITHUB_OUTPUT
-      shell: bash
 
     - name: Create Version Tag
       uses: actions/github-script@v9
