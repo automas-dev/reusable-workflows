@@ -20,6 +20,7 @@ jobs:
 
       - name: Increment version
         uses: automas-dev/reusable-workflows/increment_version@feat/refactor_increment_version
+        id: version
         with:
           dry-run: true
           create-aliases: true
