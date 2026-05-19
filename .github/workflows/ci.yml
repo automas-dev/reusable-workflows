@@ -1,3 +1,5 @@
+name: ci
+
 on:
   push:
     branches:
@@ -15,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install Python
         uses: actions/setup-python@v6
@@ -31,10 +33,10 @@ jobs:
   increment_version:
     name: Increment Version
     uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'NO RELEASE') }}
     secrets: inherit
-    # with:
-    #   create-aliases: true
+    with:
+      create-aliases: true
 
     needs: [lint]
 
