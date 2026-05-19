@@ -38,9 +38,9 @@ runs:
     - if: ${{ inputs.tag == '' }}
       shell: bash
       run: echo tag eq empty
-    - if: ${{ !inputs.tag != '' }}
+    - if: ${{ inputs.tag != '' }}
       shell: bash
-      run: echo not tag not eq empty
+      run: echo tag not eq empty
 
     # - name: Get next version
     #   uses: reecetech/version-increment@2024.10.1
