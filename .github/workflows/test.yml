@@ -1,0 +1,25 @@
+name: test
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  increment_version:
+    name: Increment Version
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Create tag
+        uses: automas-dev/reusable-workflows/increment_version@feat/refactor_increment_version
+        with:
+          dry-run: true
+          create-aliases: true
