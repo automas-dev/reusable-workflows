@@ -19,13 +19,13 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Increment version
-        uses: automas-dev/reusable-workflows/increment_version@feat/refactor_increment_version
+        uses: automas-dev/reusable-workflows/increment_version@main
         id: version
         with:
           dry-run: true
 
       - name: Increment version
-        uses: automas-dev/reusable-workflows/increment_version@feat/refactor_increment_version
+        uses: automas-dev/reusable-workflows/increment_version@main
         with:
           tag: ${{ steps.version.outputs.version }}
           create-aliases: true
