@@ -21,10 +21,10 @@ inputs:
 outputs:
   current-version:
     description: The current version
-    value: ${{ steps.output.outputs.current-version }}
+    value: ${{ inputs.tag || steps.version.outputs.current-version }}
   version:
     description: The new version
-    value: ${{ steps.output.outputs.version }}
+    value: ${{ inputs.tag || steps.version.outputs.version }}
 
 runs:
   using: composite
