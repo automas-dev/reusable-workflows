@@ -21,25 +21,26 @@ inputs:
 outputs:
   current-version:
     description: The current version
-    value: ${{ steps.version.outputs.current-version }}
+    value: ${{ steps.output.outputs.current-version }}
   version:
     description: The new version
-    value: ${{ steps.version.outputs.version }}
+    value: ${{ steps.output.outputs.version }}
 
 runs:
   using: composite
   steps:
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
-      if: ${{ !inputs.tag }}
       id: version
       with:
         scheme: conventional_commits
 
     - name: Use explicit version
+      id: output
       if: ${{ inputs.tag }}
-      id: version
-      run: echo "version=${{ inputs.tag }}" >> $GITHUB_OUTPUT
+      run: |
+        echo "current-version=${{ steps.version.outputs.current-version }}" >> $GITHUB_OUTPUT
+        echo "version=${{ inputs.tag || steps.version.outputs.version }}" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Create Version Tag
