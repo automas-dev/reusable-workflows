@@ -31,7 +31,7 @@ jobs:
         uses: automas-dev/reusable-workflows/increment_version@feat/refactor_increment_version
         id: version2
         with:
-          dry-run: false
+          dry-run: true
           tag: explicit
           create-aliases: true
 
