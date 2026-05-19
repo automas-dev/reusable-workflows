@@ -61,8 +61,7 @@ runs:
               repo: context.repo.repo,
               // Note: without /ref/
               ref: `tags/v${major}`,
-              sha: context.sha,
-              force: true
+              sha: context.sha
             });
           });
 
@@ -79,7 +78,6 @@ runs:
               repo: context.repo.repo,
               // Note: without /ref/
               ref: `tags/v${major}.${minor}`,
-              sha: context.sha,
-              force: true
+              sha: context.sha
             });
           });
