@@ -70,7 +70,8 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 ref: `refs/tags/v${major}`,
-                sha: context.sha
+                sha: context.sha,
+                force: true
               });
             });
 
@@ -86,6 +87,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 ref: `refs/tags/v${major}.${minor}`,
-                sha: context.sha
+                sha: context.sha,
+                force: true
               });
             });
