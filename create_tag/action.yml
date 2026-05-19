@@ -16,7 +16,6 @@ runs:
   steps:
     - name: Create Version Tag
       uses: actions/github-script@v9
-      if: ${{ !contains(github.event.head_commit.message, 'NO RELEASE') }}
       with:
         script: |
           github.rest.git.createRef({
@@ -28,7 +27,6 @@ runs:
 
     - name: Create Major / Minor Alias Tags
       uses: actions/github-script@v9
-      if: ${{ inputs.create-aliases == 'true' && !contains(github.event.head_commit.message, 'NO RELEASE') }}
       with:
         script: |
           const version = '${{ inputs.tag }}';
