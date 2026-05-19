@@ -32,32 +32,32 @@ runs:
     - name: bool
       if: ${{ inputs.dry-run }}
       shell: bash
-      run: echo hi
+      run: echo bool
 
     - name: not bool
       if: ${{ !inputs.dry-run }}
       shell: bash
-      run: echo hi
+      run: echo not bool
 
     - name: str equals
       if: ${{ inputs.dry-run == 'true' }}
       shell: bash
-      run: echo hi
+      run: echo str equals
 
     - name: str not equals
       if: ${{ inputs.dry-run != 'true' }}
       shell: bash
-      run: echo hi
+      run: echo str not equals
 
     - name: bool equals
       if: ${{ inputs.dry-run == true }}
       shell: bash
-      run: echo hi
+      run: echo bool equals
 
     - name: bool not equals
       if: ${{ inputs.dry-run != true }}
       shell: bash
-      run: echo hi
+      run: echo bool not equals
 
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
