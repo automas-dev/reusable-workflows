@@ -46,10 +46,5 @@ jobs:
         id: version
         with:
           dry-run: ${{ inputs.dry-run }}
+          tag: ${{ inputs.tag }}
           aliases: ${{ inputs.aliases }}
-
-      - name: Increment version
-        uses: automas-dev/reusable-workflows/increment_version@main
-        with:
-          tag: ${{ steps.version.outputs.version }}
-          aliases: true
