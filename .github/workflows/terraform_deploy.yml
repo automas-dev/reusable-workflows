@@ -17,6 +17,11 @@ on:
         type: string
         required: false
         default: terraform
+      version-aliases:
+        description: Create / update alias tags for major and minor versions
+        type: boolean
+        required: false
+        default: false
 
     outputs:
       current-version:
@@ -111,7 +116,8 @@ jobs:
         run: terraform plan -out tfplan.out -input=false
         working-directory: ${{ inputs.working-directory }}
         env:
-          TF_VAR_git_tag: ${{ inputs.increment-version && steps.version.outputs.version ||
+          TF_VAR_git_tag:
+            ${{ inputs.increment-version && steps.version.outputs.version ||
             inputs.git-tag }}
 
       - name: Create Plan Comment
@@ -130,6 +136,7 @@ jobs:
       - name: Create git version tag
         if: inputs.increment-version && github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
-        uses: automas-dev/reusable-workflows/create_tag@v1.0
+        uses: automas-dev/reusable-workflows/increment_version@v1.0
         with:
           tag: ${{ steps.version.outputs.version }}
+          aliases: ${{ inputs.version-aliases }}
