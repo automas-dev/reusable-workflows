@@ -37,7 +37,7 @@ jobs:
     secrets: inherit
     with:
       # dry-run: ${{ github.ref != 'refs/heads/main' }}
-      aliases: true
+      aliases: ${{ github.ref == 'refs/heads/main' }}
 
     needs: [lint]
 
