@@ -48,14 +48,14 @@ Example splitting version increment and tag creation
 
 ```yaml
 steps:
-  - uses: automas-dev/reusable-workflows/increment_version@v1
+  - uses: automas-dev/reusable-workflows/increment_version@main
     id: version
     with:
       dry-run: true
 
   - run: echo Do stuff with ${{ steps.version.outputs.version }}
 
-  - uses: automas-dev/reusable-workflows/increment_version@v1
+  - uses: automas-dev/reusable-workflows/increment_version@main
     with:
       tag: ${{ steps.version.outputs.version }}
 ```
@@ -92,7 +92,7 @@ This workflow needs to inherit secrets.
 ```yaml
 jobs:
   tf:
-    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@main
     secrets: inherit
 ```
 
@@ -102,7 +102,7 @@ the pull-request write permission.
 ```yaml
 jobs:
   tf:
-    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@main
     permissions:
       contents: write
       pull-requests: write
@@ -173,7 +173,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: automas-dev/reusable-workflows/increment_version@v1
+      - uses: automas-dev/reusable-workflows/increment_version@main
 ```
 
 ### Workflow
@@ -190,7 +190,7 @@ on:
 
 jobs:
   increment_version:
-    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@v1
+    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
     secrets: inherit
 
     permissions:

@@ -71,7 +71,7 @@ jobs:
 
       - name: Get next git tag
         id: version
-        uses: automas-dev/reusable-workflows/increment_version@v1
+        uses: automas-dev/reusable-workflows/increment_version@main
         with:
           dry-run: true
 
@@ -130,6 +130,6 @@ jobs:
       - name: Create git version tag
         if: inputs.increment-version && github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
-        uses: automas-dev/reusable-workflows/create_tag@v1
+        uses: automas-dev/reusable-workflows/create_tag@main
         with:
           tag: ${{ steps.version.outputs.version }}
