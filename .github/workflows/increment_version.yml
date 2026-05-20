@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Increment version
-        uses: automas-dev/reusable-workflows/increment_version@main
+        uses: automas-dev/reusable-workflows/increment_version@v1.0
         id: version
         with:
           dry-run: ${{ inputs.dry-run }}
