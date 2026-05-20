@@ -2,6 +2,12 @@
 
 These workflows and actions contain common tasks in github actions workflows.
 
+**V0 ⟶ V1 Migration**
+
+- `setup_python` action was removed
+- `create_tag` action was replaced with `increment_version` action using `tag` input
+- `increment_version` input `create_tag` was replaced with `dry-run`
+
 ## Actions
 
 ### Increment Version
@@ -17,19 +23,19 @@ See [reecetech/version-increment](https://github.com/reecetech/version-increment
 > - minor: feat
 > - major: any of the above keywords followed by a '!' character, or 'BREAKING CHANGE:' in commit body
 
-There is an optional `create-tag` input used to disable the creation of git tags
+There is an optional `dry-run` input used to disable the creation of git tags
 when running.This is useful in workflows where the next version is needed before
 the tag is created (eg. if the version is used in a build but the tag isn't
-created until the build passes).
-
-Tag creation can also be disabled in the commit message. Include `NO RELEASE` in
-the commit message to prevent a tag from being created for that commit.
+created until the build passes). The action can be called again with `tag` set
+to create the git tag without generating a new version.
 
 **Inputs**
 
-| Name         | Required | Default | Description                           |
-| ------------ | -------- | ------- | ------------------------------------- |
-| `create-tag` | false    | true    | Create a git tag with the new version |
+| Name      | Required | Default | Description                                       |
+| --------- | -------- | ------- | ------------------------------------------------- |
+| `dry-run` | false    | true    | Create a git tag with the new version             |
+| `tag`     | false    |         | Explicit value used for new version tag           |
+| `aliases` | false    | false   | Create version aliases for major / minor versions |
 
 **Outputs**
 
@@ -38,46 +44,21 @@ the commit message to prevent a tag from being created for that commit.
 | `current-version` | The previous git tag |
 | `version`         | The new version      |
 
-### Create Tag
+Example splitting version increment and tag creation
 
-Uses: `automas-dev/reusable-workflows/create_tag`
+```yaml
+steps:
+  - uses: automas-dev/reusable-workflows/increment_version@v1
+    id: version
+    with:
+      dry-run: true
 
-If the `increment-version` action is used with `create-tags: false`, this action
-can be used to create the version tag later in the workflow. This allows a
-workflow to delay tag creation until after steps that need the new version but
-may fail.
+  - run: echo Do stuff with ${{ steps.version.outputs.version }}
 
-**Inputs**
-
-| Name  | Required | Default | Description |
-| ----- | -------- | ------- | ----------- |
-| `tag` | true     |         | Tag value   |
-
-### Setup Python
-
-Uses: `automas-dev/reusable-workflows/setup_python`
-
-Install python and poetry.
-
-**Inputs**
-
-| Name             | Required | Default | Description               |
-| ---------------- | -------- | ------- | ------------------------- |
-| `python-version` | true     | 3.13    | Python version to install |
-| `poetry-version` | true     | 1.8.5   | Poetry version to install |
-
-**Outputs**
-
-| Name              | Description         |
-| ----------------- | ------------------- |
-| `current-version` | The current version |
-| `version`         | The new version     |
-
->[!WARNING] Deprecated
-> This action will be removed in a future version.
->
-> Reason: The two steps are so simple it's not worth having an entire action to
-> combine them.
+  - uses: automas-dev/reusable-workflows/increment_version@v1
+    with:
+      tag: ${{ steps.version.outputs.version }}
+```
 
 ## Workflows
 
@@ -85,16 +66,15 @@ Install python and poetry.
 
 Uses: `automas-dev/reusable-workflows/.github/workflows/increment_version.yml`
 
-Versions are incremented based on commit messages. The default action is patch,
-but others are available based on keywords.
-
 This is a convenience wrapper of the `Increment Version` action.
 
 **Inputs**
 
-| Name         | Required | Default | Description                           |
-| ------------ | -------- | ------- | ------------------------------------- |
-| `create-tag` | false    | true    | Create a git tag with the new version |
+| Name      | Required | Default | Description                                       |
+| --------- | -------- | ------- | ------------------------------------------------- |
+| `dry-run` | false    | true    | Create a git tag with the new version             |
+| `tag`     | false    |         | Explicit value used for new version tag           |
+| `aliases` | false    | false   | Create version aliases for major / minor versions |
 
 **Outputs**
 
@@ -112,7 +92,7 @@ This workflow needs to inherit secrets.
 ```yaml
 jobs:
   tf:
-    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@main
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1
     secrets: inherit
 ```
 
@@ -122,7 +102,7 @@ the pull-request write permission.
 ```yaml
 jobs:
   tf:
-    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@main
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1
     permissions:
       contents: write
       pull-requests: write
@@ -149,10 +129,10 @@ These vars need to be available in the github repo.
 
 These secrets need to be available in the github repo.
 
-| Name                          | Description                            |
-| ----------------------------- | -------------------------------------- |
-| `TFSTATE_ACCESS_KEY`          | R2 bucket access key for tf state file |
-| `TFSTATE_SECRET_KEY`          | R2 bucket secret key for tf state file |
+| Name                 | Description                            |
+| -------------------- | -------------------------------------- |
+| `TFSTATE_ACCESS_KEY` | R2 bucket access key for tf state file |
+| `TFSTATE_SECRET_KEY` | R2 bucket secret key for tf state file |
 
 **Outputs**
 
@@ -193,8 +173,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: automas-dev/reusable-workflows/increment_version@main
-
+      - uses: automas-dev/reusable-workflows/increment_version@v1
 ```
 
 ### Workflow
@@ -211,15 +190,9 @@ on:
 
 jobs:
   increment_version:
-    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@main
+    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@v1
     secrets: inherit
 
     permissions:
       contents: write
 ```
-
-### ~~Versions~~
-
-~~Previously versions other than main were specified as an exact version. With~~
-~~the updated `create-aliases` input of increment_version, workflow and action~~
-~~version aliases (eg. `v1` or `v1.3`) are available and recommended.~~

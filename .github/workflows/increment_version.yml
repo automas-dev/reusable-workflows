@@ -3,13 +3,17 @@ name: Increment Version
 on:
   workflow_call:
     inputs:
-      create-tag:
-        description: "Create a tag with the new version"
+      dry-run:
+        description: Skip tag creation and only output new version
         type: boolean
         required: false
-        default: true
-      create-aliases:
-        description: "Create / update alias tags for major and minor versions"
+        default: false
+      tag:
+        description: Explicit tag value to use instead of generating a new value
+        type: string
+        required: false
+      aliases:
+        description: Create / update alias tags for major and minor versions
         type: boolean
         required: false
         default: false
@@ -38,7 +42,19 @@ jobs:
       - uses: actions/checkout@v6
 
       - id: version
-        uses: automas-dev/reusable-workflows/increment_version@main
+        uses: automas-dev/reusable-workflows/increment_version@v1
         with:
-          create-tag: ${{ inputs.create-tag }}
-          create-aliases: ${{ inputs.create-aliases }}
+          dry-run: ${{ inputs.dry-run }}
+          aliases: ${{ inputs.aliases }}
+
+      - name: Increment version
+        uses: automas-dev/reusable-workflows/increment_version@v1
+        id: version
+        with:
+          dry-run: true
+
+      - name: Increment version
+        uses: automas-dev/reusable-workflows/increment_version@v1
+        with:
+          tag: ${{ steps.version.outputs.version }}
+          aliases: true

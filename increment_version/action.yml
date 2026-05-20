@@ -1,18 +1,17 @@
 name: Increment Version
 description: Increment semantic version and create a new tag
 
+# TODO version prefix (default v)
 inputs:
   dry-run:
-    description: >
-      Skip tag creation and only output new version,
-      useful for steps that require the new version but run before tag creation
+    description: Skip tag creation and only output new version
     type: boolean
     required: false
     default: false
   tag:
     description: Explicit tag value to use instead of generating a new value
     required: false
-  create-aliases:
+  aliases:
     description: Create / update alias tags for major and minor versions
     type: boolean
     required: false
@@ -35,6 +34,7 @@ runs:
       with:
         scheme: conventional_commits
 
+    # TODO check if tag already exists (this is a rebuild)
     - name: Create Version Tag
       uses: actions/github-script@v9
       # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
@@ -58,7 +58,7 @@ runs:
 
     - name: Create Major / Minor Alias Tags
       uses: actions/github-script@v9
-      if: ${{inputs.dry-run != 'true' &&  inputs.create-aliases == 'true' }}
+      if: ${{inputs.dry-run != 'true' &&  inputs.aliases == 'true' }}
       env:
         VERSION: ${{ inputs.tag || steps.version.outputs.version }}
       with:
