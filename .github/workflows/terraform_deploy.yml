@@ -73,7 +73,7 @@ jobs:
         id: version
         uses: automas-dev/reusable-workflows/increment_version@main
         with:
-          create-tag: false
+          dry-run: true
 
       # See https://cloudchronicles.blog/blog/Passing-Environment-Secrets-and-Variables-to-Reusable-Workflows-in-GitHub-Actions/
 
