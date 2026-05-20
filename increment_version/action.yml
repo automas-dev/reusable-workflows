@@ -47,13 +47,11 @@ runs:
           const version = process.env.VERSION;
           console.log(`Got version ${version} and current ${current_version}`);
 
-          const exists = github.rest.git.getRef({
+          github.rest.git.getRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
             // Note: without ref/
             ref: `tags/${version}`,
-          }).then(() => {
-            console.log('Tag already exists, skipping');
           }).catch(err => {
             if (err !== 404) throw err;
 
