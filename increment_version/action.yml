@@ -37,7 +37,7 @@ runs:
     - name: Create Version Tag
       uses: actions/github-script@v9
       # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
-      if: ${{ inputs.dry-run != 'true' }}
+      if: inputs.dry-run != 'true'
       env:
         CURRENT_VERSION: ${{ inputs.tag || steps.version.outputs.current-version }}
         VERSION: ${{ inputs.tag || steps.version.outputs.version }}
@@ -71,7 +71,7 @@ runs:
 
     - name: Create Major / Minor Alias Tags
       uses: actions/github-script@v9
-      if: ${{inputs.dry-run != 'true' &&  inputs.aliases == 'true' }}
+      if: inputs.dry-run != 'true' &&  inputs.aliases == 'true'
       env:
         VERSION: ${{ inputs.tag || steps.version.outputs.version }}
       with:
