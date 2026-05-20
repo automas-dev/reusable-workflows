@@ -34,26 +34,39 @@ runs:
       with:
         scheme: conventional_commits
 
-    # TODO check if tag already exists (this is a rebuild)
     - name: Create Version Tag
       uses: actions/github-script@v9
       # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
       if: ${{ inputs.dry-run != 'true' }}
       env:
+        CURRENT_VERSION: ${{ inputs.tag || steps.version.outputs.current-version }}
         VERSION: ${{ inputs.tag || steps.version.outputs.version }}
       with:
         script: |
+          const current_version = process.env.CURRENT_VERSION;
           const version = process.env.VERSION;
-          console.log(`Got version ${version}`);
+          console.log(`Got version ${version} and current ${current_version}`);
 
-          github.rest.git.createRef({
+          const exists = github.rest.git.getRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: `refs/tags/${version}`,
-            sha: context.sha
+            // Note: without ref/
+            ref: `tags/${version}`,
+          }).then(() => {
+            console.log('Tag already exists, skipping');
           }).catch(err => {
-            if (context.ref === 'refs/heads/main') throw err;
-            console.log(`Skipping creation of existing tag ${version}`);
+            if (err !== 404) throw err;
+
+            console.log(`Creating tag ${version}`);
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${version}`,
+              sha: context.sha
+            }).catch(err => {
+              if (context.ref === 'refs/heads/main') throw err;
+              console.log(`Skipping creation of existing tag ${version}`);
+            });
           });
 
     - name: Create Major / Minor Alias Tags
@@ -83,7 +96,7 @@ runs:
             github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              // Note: without /ref/
+              // Note: without ref/
               ref: `tags/v${major}`,
               sha: context.sha
             });
@@ -100,7 +113,7 @@ runs:
             github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              // Note: without /ref/
+              // Note: without ref/
               ref: `tags/v${major}.${minor}`,
               sha: context.sha
             });
