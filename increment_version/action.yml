@@ -29,7 +29,7 @@ outputs:
     value: ${{ steps.version.outputs.version }}
   tag:
     description: The new version tag
-    value: ${{ steps.tags.outputs.version-tag }}
+    value: ${{ steps.tags.outputs.version_tag }}
 
 runs:
   using: composite
@@ -54,16 +54,16 @@ runs:
         if [ -n "$TAG" ]; then
           version=$TAG
         fi
-        echo "current-tag=${current}" >> "$GITHUB_OUTPUT"
-        echo "version-tag=${version}" >> "$GITHUB_OUTPUT"
+        echo "current_tag=${current}" >> "$GITHUB_OUTPUT"
+        echo "version_tag=${version}" >> "$GITHUB_OUTPUT"
 
     - name: Create Version Tag
       uses: actions/github-script@v9
       # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
       if: inputs.dry-run != 'true'
       env:
-        CURRENT_TAG: ${{ steps.tags.outputs.current-tag }}
-        VERSION_TAG: ${{ steps.tags.outputs.version-tag }}
+        CURRENT_TAG: ${{ steps.tags.outputs.current_tag }}
+        VERSION_TAG: ${{ steps.tags.outputs.version_tag }}
       with:
         script: |
           const current_tag = process.env.CURRENT_TAG;
@@ -95,7 +95,7 @@ runs:
       uses: actions/github-script@v9
       if: inputs.dry-run != 'true' &&  inputs.aliases == 'true'
       env:
-        VERSION_TAG: ${{ steps.tags.outputs.version-tag }}
+        VERSION_TAG: ${{ steps.tags.outputs.version_tag }}
       with:
         script: |
           const version_tag = process.env.VERSION_TAG;
