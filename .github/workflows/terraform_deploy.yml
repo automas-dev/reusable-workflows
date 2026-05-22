@@ -30,6 +30,9 @@ on:
       version:
         description: The new version
         value: ${{ jobs.tf.outputs.version }}
+      tag:
+        description: The new version tag
+        value: ${{ jobs.tf.outputs.tag }}
 
 jobs:
   tf:
@@ -77,7 +80,7 @@ jobs:
 
       - name: Get next git tag
         id: version
-        uses: automas-dev/reusable-workflows/increment_version@v1.0
+        uses: automas-dev/reusable-workflows/increment_version@v1.1
         with:
           dry-run: true
 
@@ -137,7 +140,7 @@ jobs:
       - name: Create git version tag
         if: inputs.increment-version && github.ref == 'refs/heads/main' &&
           !contains(github.event.head_commit.message, 'NO RELEASE')
-        uses: automas-dev/reusable-workflows/increment_version@v1.0
+        uses: automas-dev/reusable-workflows/increment_version@v1.1
         with:
-          tag: ${{ steps.version.outputs.version }}
+          tag: ${{ steps.version.outputs.tag }}
           aliases: ${{ inputs.version-aliases }}

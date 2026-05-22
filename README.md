@@ -96,7 +96,7 @@ This workflow needs to inherit secrets.
 ```yaml
 jobs:
   tf:
-    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1.0
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1.1
     secrets: inherit
 ```
 
@@ -106,7 +106,7 @@ the pull-request write permission.
 ```yaml
 jobs:
   tf:
-    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1.0
+    uses: automas-dev/reusable-workflows/.github/workflows/terraform_deploy.yml@v1.1
     permissions:
       contents: write
       pull-requests: write
