@@ -68,7 +68,6 @@ runs:
         script: |
           const current_tag = process.env.CURRENT_TAG;
           const version_tag = `process.env.VERSION_TAG;
-          console.log(`Got current tag ${current_tag} and version tag ${version_tag}`);
 
           github.rest.git.getRef({
             owner: context.repo.owner,
@@ -100,7 +99,6 @@ runs:
       with:
         script: |
           const version_tag = process.env.VERSION_TAG;
-          console.log(`Got version ${version_tag}`);
 
           if (!/([0-9]+\.){2}/.test(version_tag)) {
             throw new Error(`Invalid version ${version_tag}`);
