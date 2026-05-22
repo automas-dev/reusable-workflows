@@ -50,14 +50,14 @@ Example splitting version increment and tag creation
 
 ```yaml
 steps:
-  - uses: automas-dev/reusable-workflows/increment_version@v1.0
+  - uses: automas-dev/reusable-workflows/increment_version@v1.1
     id: version
     with:
       dry-run: true
 
   - run: echo Do stuff with ${{ steps.version.outputs.version }} or ${{ steps.version.outputs.tag }}
 
-  - uses: automas-dev/reusable-workflows/increment_version@v1.0
+  - uses: automas-dev/reusable-workflows/increment_version@v1.1
     with:
       tag: ${{ steps.version.outputs.tag }}
 ```
@@ -177,7 +177,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: automas-dev/reusable-workflows/increment_version@v1.0
+      - uses: automas-dev/reusable-workflows/increment_version@v1.1
 ```
 
 ### Workflow
@@ -194,7 +194,7 @@ on:
 
 jobs:
   increment_version:
-    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@v1.0
+    uses: automas-dev/reusable-workflows/.github/workflows/increment_version.yml@v1.1
     secrets: inherit
 
     permissions:
