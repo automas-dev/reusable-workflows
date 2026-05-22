@@ -69,73 +69,51 @@ runs:
           const current_tag = process.env.CURRENT_TAG;
           const version_tag = `process.env.VERSION_TAG;
 
-          github.rest.git.getRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            // Note: without ref/
-            ref: `tags/${version_tag}`,
-          }).then(() => {
-            console.log(`Tag ${version_tag} already exists, skipping`);
-          }).catch(err => {
-            if (err.status !== 404) throw err;
+    # - name: Create Major / Minor Alias Tags
+    #   uses: actions/github-script@v9
+    #   if: inputs.dry-run != 'true' &&  inputs.aliases == 'true'
+    #   env:
+    #     VERSION_TAG: ${{ steps.tags.outputs.version_tag }}
+    #   with:
+    #     script: |
+    #       const version_tag = process.env.VERSION_TAG;
 
-            console.log(`Creating tag ${version_tag}`);
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${version_tag}`,
-              sha: context.sha
-            }).catch(err => {
-              if (context.ref === 'refs/heads/main') throw err;
-              console.log(`Skipping creation of existing tag ${version_tag}`);
-            });
-          });
+    #       if (!/([0-9]+\.){2}/.test(version_tag)) {
+    #         throw new Error(`Invalid version ${version_tag}`);
+    #       }
+    #       const [major, minor] = version_tag.split('.', 2);
+    #       console.log({major, minor});
 
-    - name: Create Major / Minor Alias Tags
-      uses: actions/github-script@v9
-      if: inputs.dry-run != 'true' &&  inputs.aliases == 'true'
-      env:
-        VERSION_TAG: ${{ steps.tags.outputs.version_tag }}
-      with:
-        script: |
-          const version_tag = process.env.VERSION_TAG;
+    #       // Major version
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: `refs/tags/${major}`,
+    #         sha: context.sha
+    #       }).catch(err => {
+    #         if (err.status !== 422) throw err;
+    #         github.rest.git.updateRef({
+    #           owner: context.repo.owner,
+    #           repo: context.repo.repo,
+    #           // Note: without ref/
+    #           ref: `tags/${major}`,
+    #           sha: context.sha
+    #         });
+    #       });
 
-          if (!/([0-9]+\.){2}/.test(version_tag)) {
-            throw new Error(`Invalid version ${version_tag}`);
-          }
-          const [major, minor] = version_tag.split('.', 2);
-          console.log({major, minor});
-
-          // Major version
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `refs/tags/${major}`,
-            sha: context.sha
-          }).catch(err => {
-            if (err.status !== 422) throw err;
-            github.rest.git.updateRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              // Note: without ref/
-              ref: `tags/${major}`,
-              sha: context.sha
-            });
-          });
-
-          // Major.Minor version
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `refs/tags/${major}.${minor}`,
-            sha: context.sha
-          }).catch(err => {
-            if (err.status !== 422) throw err;
-            github.rest.git.updateRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              // Note: without ref/
-              ref: `tags/${major}.${minor}`,
-              sha: context.sha
-            });
-          });
+    #       // Major.Minor version
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: `refs/tags/${major}.${minor}`,
+    #         sha: context.sha
+    #       }).catch(err => {
+    #         if (err.status !== 422) throw err;
+    #         github.rest.git.updateRef({
+    #           owner: context.repo.owner,
+    #           repo: context.repo.repo,
+    #           // Note: without ref/
+    #           ref: `tags/${major}.${minor}`,
+    #           sha: context.sha
+    #         });
+    #       });
