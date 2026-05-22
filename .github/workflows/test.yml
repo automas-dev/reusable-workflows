@@ -1,5 +1,3 @@
-name: Increment Version
-
 on:
   pull_request:
     types:
@@ -8,8 +6,7 @@ on:
       - synchronize
 
 jobs:
-  increment_version:
-    name: Increment Version
+  test:
     runs-on: ubuntu-latest
 
     permissions:
@@ -22,8 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Increment version
-        uses: automas-dev/reusable-workflows/increment_version@tag_prefix
+      - uses: automas-dev/reusable-workflows/increment_version@tag_prefix
         id: version
         with:
           dry-run: false
