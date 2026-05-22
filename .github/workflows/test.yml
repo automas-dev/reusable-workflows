@@ -1,0 +1,31 @@
+name: Increment Version
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  increment_version:
+    name: Increment Version
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    outputs:
+      current-version: ${{ steps.version.outputs.current-version }}
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Increment version
+        uses: automas-dev/reusable-workflows/increment_version@tag_prefix
+        id: version
+        with:
+          dry-run: false
+          aliases: true
+          prefix: v
