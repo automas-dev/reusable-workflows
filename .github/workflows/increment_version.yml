@@ -55,3 +55,4 @@ jobs:
           dry-run: ${{ inputs.dry-run }}
           tag: ${{ inputs.tag }}
           aliases: ${{ inputs.aliases }}
+          prefix: ${{ inputs.prefix }}
