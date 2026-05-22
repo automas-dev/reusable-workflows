@@ -17,6 +17,10 @@ on:
         type: boolean
         required: false
         default: false
+      prefix:
+        description: Tag prefix
+        type: string
+        required: false
 
     outputs:
       current-version:
@@ -25,6 +29,9 @@ on:
       version:
         description: "The new version"
         value: ${{ jobs.increment_version.outputs.version }}
+      # tag:
+      #   description: The new version tag
+      #   value: ${{ jobs.increment_version.outputs.version-tag }}
 
 jobs:
   increment_version:
