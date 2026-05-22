@@ -68,7 +68,7 @@ runs:
         script: |
           const current_tag = process.env.CURRENT_TAG;
           const version_tag = `process.env.VERSION_TAG;
-          console.log(`Got current tag ${current_tag} and version tag ${version_tag}`);
+          // console.log(`Got current tag ${current_tag} and version tag ${version_tag}`);
 
           github.rest.git.getRef({
             owner: context.repo.owner,
