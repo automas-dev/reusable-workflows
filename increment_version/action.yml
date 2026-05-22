@@ -1,7 +1,6 @@
 name: Increment Version
 description: Increment semantic version and create a new tag
 
-# TODO version prefix (default v)
 inputs:
   dry-run:
     description: Skip tag creation and only output new version
@@ -16,6 +15,10 @@ inputs:
     type: boolean
     required: false
     default: false
+  prefix:
+    description: Tag prefix
+    type: string
+    required: false
 
 outputs:
   current-version:
@@ -23,7 +26,10 @@ outputs:
     value: ${{ steps.version.outputs.current-version }}
   version:
     description: The new version
-    value: ${{ inputs.tag || steps.version.outputs.version }}
+    value: ${{ steps.version.outputs.version }}
+  tag:
+    description: The new version tag
+    value: ${{ steps.tags.outputs.version-tag }}
 
 runs:
   using: composite
@@ -34,38 +40,53 @@ runs:
       with:
         scheme: conventional_commits
 
+    - name: Generate tags
+      id: tags
+      env:
+        CURRENT_VERSION: ${{ steps.version.outputs.current-version }}
+        VERSION: ${{ steps.version.outputs.version }}
+        TAG: ${{ inputs.tag }}
+        PREFIX: ${{ inputs.prefix }}
+      shell: bash
+      run: |
+        version="${PREFIX}${VERSION}"
+        if [ -n "$TAG" ]; then
+          echo "Overriding version tag with ${TAG}"
+          version=$TAG
+        fi
+        echo "Using tag value ${version}"
+        echo "version-tag=${version}" >> "$GITHUB_OUTPUT"
+
     - name: Create Version Tag
       uses: actions/github-script@v9
       # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
       if: inputs.dry-run != 'true'
       env:
-        CURRENT_VERSION: ${{ inputs.tag || steps.version.outputs.current-version }}
-        VERSION: ${{ inputs.tag || steps.version.outputs.version }}
+        VERSION_TAG: ${{ steps.tags.outputs.version-tag }}
       with:
         script: |
-          const current_version = process.env.CURRENT_VERSION;
-          const version = process.env.VERSION;
-          console.log(`Got version ${version} and current ${current_version}`);
+          const version_tag = process.env.VERSION_TAG;
+          console.log(`Got version tag ${version_tag}`);
 
           github.rest.git.getRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
             // Note: without ref/
-            ref: `tags/${version}`,
+            ref: `tags/${version_tag}`,
           }).then(() => {
-            console.log('Tag already exists, skipping');
+            console.log(`Tag ${version_tag} already exists, skipping`);
           }).catch(err => {
             if (err.status !== 404) throw err;
 
-            console.log(`Creating tag ${version}`);
+            console.log(`Creating tag ${version_tag}`);
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `refs/tags/${version}`,
+              ref: `refs/tags/${version_tag}`,
               sha: context.sha
             }).catch(err => {
               if (context.ref === 'refs/heads/main') throw err;
-              console.log(`Skipping creation of existing tag ${version}`);
+              console.log(`Skipping creation of existing tag ${version_tag}`);
             });
           });
 
@@ -73,23 +94,23 @@ runs:
       uses: actions/github-script@v9
       if: inputs.dry-run != 'true' &&  inputs.aliases == 'true'
       env:
-        VERSION: ${{ inputs.tag || steps.version.outputs.version }}
+        VERSION_TAG: ${{ steps.tags.outputs.version-tag }}
       with:
         script: |
-          const version = process.env.VERSION;
-          console.log(`Got version ${version}`);
+          const version_tag = process.env.VERSION_TAG;
+          console.log(`Got version tag ${version_tag}`);
 
-          if (!/([0-9]+\.){2}/.test(version)) {
-            throw new Error(`Invalid version ${version}`);
+          if (!/([0-9]+\.){2}/.test(version_tag)) {
+            throw new Error(`Invalid version ${version_tag}`);
           }
-          const [major, minor] = version.split('.', 2);
+          const [major, minor] = version_tag.split('.', 2);
           console.log({major, minor});
 
           // Major version
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: `refs/tags/v${major}`,
+            ref: `refs/tags/${major}`,
             sha: context.sha
           }).catch(err => {
             if (err.status !== 422) throw err;
@@ -97,7 +118,7 @@ runs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               // Note: without ref/
-              ref: `tags/v${major}`,
+              ref: `tags/${major}`,
               sha: context.sha
             });
           });
@@ -106,7 +127,7 @@ runs:
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: `refs/tags/v${major}.${minor}`,
+            ref: `refs/tags/${major}.${minor}`,
             sha: context.sha
           }).catch(err => {
             if (err.status !== 422) throw err;
@@ -114,7 +135,7 @@ runs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               // Note: without ref/
-              ref: `tags/v${major}.${minor}`,
+              ref: `tags/${major}.${minor}`,
               sha: context.sha
             });
           });

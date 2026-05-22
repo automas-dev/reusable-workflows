@@ -36,13 +36,15 @@ to create the git tag without generating a new version.
 | `dry-run` | false    | true    | Create a git tag with the new version             |
 | `tag`     | false    |         | Explicit value used for new version tag           |
 | `aliases` | false    | false   | Create version aliases for major / minor versions |
+| `prefix`  | false    |         | Prefix used when creating tags                    |
 
 **Outputs**
 
-| Name              | Description          |
-| ----------------- | -------------------- |
-| `current-version` | The previous git tag |
-| `version`         | The new version      |
+| Name              | Description                 |
+| ----------------- | --------------------------- |
+| `current-version` | The previous version        |
+| `version`         | The new version             |
+| `tag`             | Git tag for the new version |
 
 Example splitting version increment and tag creation
 
@@ -53,11 +55,11 @@ steps:
     with:
       dry-run: true
 
-  - run: echo Do stuff with ${{ steps.version.outputs.version }}
+  - run: echo Do stuff with ${{ steps.version.outputs.version }} or ${{ steps.version.outputs.tag }}
 
   - uses: automas-dev/reusable-workflows/increment_version@v1.0
     with:
-      tag: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
 ```
 
 ## Workflows
@@ -75,13 +77,15 @@ This is a convenience wrapper of the `Increment Version` action.
 | `dry-run` | false    | true    | Create a git tag with the new version             |
 | `tag`     | false    |         | Explicit value used for new version tag           |
 | `aliases` | false    | false   | Create version aliases for major / minor versions |
+| `prefix`  | false    |         | Prefix used when creating tags                    |
 
 **Outputs**
 
-| Name              | Description          |
-| ----------------- | -------------------- |
-| `current-version` | The previous git tag |
-| `version`         | The new version      |
+| Name              | Description                 |
+| ----------------- | --------------------------- |
+| `current-version` | The previous version        |
+| `version`         | The new version             |
+| `tag`             | Git tag for the new version |
 
 ### Terraform Deploy
 

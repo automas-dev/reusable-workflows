@@ -43,6 +43,7 @@ jobs:
     outputs:
       current-version: ${{ steps.version.outputs.current-version }}
       version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
 
     steps:
       - uses: actions/checkout@v6
@@ -50,7 +51,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: "1.14.8"
+          terraform_version: "1.04.8"
 
       - name: Terraform Lint
         run: terraform fmt -check
