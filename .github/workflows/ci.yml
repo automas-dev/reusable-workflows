@@ -43,3 +43,11 @@ jobs:
 
     permissions:
       contents: write
+
+  ci_pass:
+    runs-on: ubuntu-latest
+
+    needs: [lint]
+
+    steps:
+      - run: echo CI build passed
