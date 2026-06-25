@@ -48,6 +48,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          repository: automas-dev/reusable-workflows
 
       - name: Increment version
         uses: ./increment_version
