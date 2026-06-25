@@ -44,10 +44,15 @@ jobs:
     permissions:
       contents: write
 
-  ci-pass:
+  check:
     runs-on: ubuntu-latest
+    if: always()
 
     needs: [lint, increment_version]
 
+    timeout-minutes: 1
+
     steps:
-      - run: echo CI build passed
+      - uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
