@@ -48,11 +48,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-        with:
-          repository: automas-dev/reusable-workflows
 
       - name: Increment version
-        uses: ./increment_version
+        uses: automas-dev/reusable-workflows/increment_version@v1.1
         id: version
         with:
           dry-run: ${{ inputs.dry-run }}
