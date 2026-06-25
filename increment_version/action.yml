@@ -92,7 +92,7 @@ runs:
 
     - name: Create Major / Minor Alias Tags
       uses: actions/github-script@v9
-      if: inputs.dry-run != 'true' &&  inputs.aliases == 'true'
+      if: inputs.dry-run != 'true' && inputs.aliases == 'true'
       env:
         VERSION_TAG: ${{ steps.tags.outputs.version-tag }}
       with:
