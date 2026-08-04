@@ -38,6 +38,7 @@ jobs:
       dry-run: ${{ github.ref != 'refs/heads/main' || contains(github.event.head_commit.message, 'NO RELEASE') }}
       aliases: true
       prefix: v
+      enforce_conventional_commit: true
 
     needs: [lint]
 
