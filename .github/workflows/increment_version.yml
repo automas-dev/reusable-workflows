@@ -21,6 +21,20 @@ on:
         description: Tag prefix
         type: string
         required: false
+      enforce_conventional_commit:
+        description: Enforce conventional commit in title
+        type: boolean
+        required: false
+        default: false
+      add_conventional_commit_label:
+        description: Add labels to PR based on conventional commit title
+        type: boolean
+        required: false
+        default: false
+      conventional_commit_types:
+        description: Add labels to PR based on conventional commit title
+        type: string
+        required: false
 
     outputs:
       current-version:
@@ -57,3 +71,6 @@ jobs:
           tag: ${{ inputs.tag }}
           aliases: ${{ inputs.aliases }}
           prefix: ${{ inputs.prefix }}
+          enforce_conventional_commit: ${{ inputs.enforce_conventional_commit }}
+          add_conventional_commit_label: ${{ inputs.add_conventional_commit_label }}
+          conventional_commit_types: ${{ inputs.conventional_commit_types }}
