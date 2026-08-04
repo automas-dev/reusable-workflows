@@ -19,6 +19,21 @@ inputs:
     description: Tag prefix
     type: string
     required: false
+  enforce_conventional_commit:
+    description: Enforce conventional commit in title
+    type: boolean
+    required: false
+    default: false
+  add_conventional_commit_label:
+    description: Add labels to PR based on conventional commit title
+    type: boolean
+    required: false
+    default: false
+  conventional_commit_types:
+    description: Add labels to PR based on conventional commit title
+    type: string
+    required: false
+    default: '["feat","fix","docs","test","ci","refactor","perf","chore","revert","build","style"]'
 
 outputs:
   current-version:
@@ -34,6 +49,12 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Conventional Commit In Pull Requests
+      uses: ytanikin/pr-conventional-commits@1.5.2
+      with:
+        task_types: ${{ inputs.conventional_commit_types }}
+        add_label: ${{ inputs.enforce_conventional_commit }}
+
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
       id: version
