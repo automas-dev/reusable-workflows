@@ -73,4 +73,4 @@ jobs:
           prefix: ${{ inputs.prefix }}
           enforce_conventional_commit: ${{ inputs.enforce_conventional_commit }}
           add_conventional_commit_label: ${{ inputs.add_conventional_commit_label }}
-          conventional_commit_types: ${{ inputs.conventional_commit_types }}
+          # conventional_commit_types: ${{ inputs.conventional_commit_types }}
