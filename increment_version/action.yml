@@ -53,7 +53,7 @@ runs:
       shell: bash
       run: |
         if [[ ! "${{ github.event.pull_request.title }}" =~ ^(feat|fix|docs|test|ci|refactor|perf|chore|revert|build|style)!?:\ .+ ]]; then
-          echo "::error ::PR title does not follow conventional commit"
+          echo "::error ::PR title does not follow conventional commit "
           exit 1
         fi
 
