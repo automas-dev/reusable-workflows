@@ -49,26 +49,15 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Check PR Title
-      uses: actions/github-script@v9
-      with:
-        script: |
-          const pr_number = context.payload.pull_request && context.payload.pull_request.number;
-          if (!pr_number) {
-            console.log('No pull request context; skipping PR title check.');
-            return;
-          }
-          const { data: pr } = await github.rest.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: pr_number,
-          });
-          const title = pr.title || '';
-          const rc = /^(feat|fix|docs|test|ci|refactor|perf|chore|revert|build|style)!?:\ .+/;
-          if (!rc.test(title)) {
-            throw new Error('PR title does not follow conventional commit');
-          }
-          console.log(`PR title Ok: ${title}`);
+    - name: Check PR title
+      shell: bash
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+      run: |
+        if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|test|ci|refactor|perf|chore|revert|build|style)!?:\ .+ ]]; then
+          echo "::error ::PR title does not follow conventional commit "
+          exit 1
+        fi
 
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
