@@ -51,8 +51,10 @@ runs:
   steps:
     - name: Check PR title
       shell: bash
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
       run: |
-        if [[ ! "${{ github.event.pull_request.title }}" =~ ^(feat|fix|docs|test|ci|refactor|perf|chore|revert|build|style)!?:\ .+ ]]; then
+        if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|test|ci|refactor|perf|chore|revert|build|style)!?:\ .+ ]]; then
           echo "::error ::PR title does not follow conventional commit "
           exit 1
         fi
