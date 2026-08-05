@@ -12,7 +12,7 @@ on:
       - synchronize
 
 permissions:
-  contents: write
+  pull-requests: read
 
 jobs:
   lint:
