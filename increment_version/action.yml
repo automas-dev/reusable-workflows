@@ -49,11 +49,13 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Conventional Commit In Pull Requests
-      uses: ytanikin/pr-conventional-commits@1.5.2
-      with:
-        task_types: ${{ inputs.conventional_commit_types }}
-        add_label: ${{ inputs.enforce_conventional_commit }}
+    - name: Check PR title
+      shell: bash
+      run: |
+        if [[ ! "${{ github.event.pull_request.title }}" =~ ^(feat|fix|docs|test|ci|refactor|perf|chore|revert|build|style)!?:\ .+ ]]; then
+          echo "::error ::PR title does not follow conventional commit"
+          exit 1
+        fi
 
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
