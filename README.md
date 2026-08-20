@@ -33,7 +33,7 @@ to create the git tag without generating a new version.
 
 | Name      | Required | Default | Description                                       |
 | --------- | -------- | ------- | ------------------------------------------------- |
-| `dry-run` | false    | true    | Create a git tag with the new version             |
+| `dry-run` | false    | false   | Skip creating a git tag                           |
 | `tag`     | false    |         | Explicit value used for new version tag           |
 | `aliases` | false    | false   | Create version aliases for major / minor versions |
 | `prefix`  | false    |         | Prefix used when creating tags                    |
@@ -74,7 +74,7 @@ This is a convenience wrapper of the `Increment Version` action.
 
 | Name      | Required | Default | Description                                       |
 | --------- | -------- | ------- | ------------------------------------------------- |
-| `dry-run` | false    | true    | Create a git tag with the new version             |
+| `dry-run` | false    | false   | Skip creating a git tag                           |
 | `tag`     | false    |         | Explicit value used for new version tag           |
 | `aliases` | false    | false   | Create version aliases for major / minor versions |
 | `prefix`  | false    |         | Prefix used when creating tags                    |
