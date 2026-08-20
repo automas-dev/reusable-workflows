@@ -38,6 +38,9 @@ jobs:
   tf:
     name: Terraform Deploy
     runs-on: ubuntu-latest
+    concurrency:
+      group: terraform-deploy-${{ inputs.working-directory }}
+      cancel-in-progress: false
 
     permissions:
       contents: write
