@@ -56,7 +56,6 @@ runs:
 
     - name: Create Version Tag
       uses: actions/github-script@v9
-      # IDK WHY INPUT EVALUATES TO STRING INSTEAD OF BOOL
       if: inputs.dry-run != 'true'
       env:
         VERSION_TAG: ${{ steps.tags.outputs.version-tag }}
