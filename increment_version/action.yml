@@ -50,6 +50,7 @@ runs:
         for prefix in ${prefixes[@]}; do
           if [[ ${PR_TITLE} == ${prefix}:* ]]; then
             echo "Found valid prefix in PR title"
+            exit 0
           fi
         done
         echo "[ERROR] Invalid PR title: ${PR_TITLE}"
