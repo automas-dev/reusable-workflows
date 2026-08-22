@@ -21,6 +21,11 @@ on:
         description: Prefix used when creating tags
         type: string
         required: false
+      # enforce-conventional-commit:
+      #   description: Enforce conventional commit PR title format
+      #   type: boolean
+      #   required: false
+      #   default: false
 
     outputs:
       current-version:
@@ -60,3 +65,4 @@ jobs:
           tag: ${{ inputs.tag }}
           aliases: ${{ inputs.aliases }}
           prefix: ${{ inputs.prefix }}
+          # enforce-conventional-commit: ${{ inputs.enforce-conventional-commit }}
