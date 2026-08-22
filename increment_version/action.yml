@@ -52,6 +52,13 @@ runs:
         echo "[ERROR] Invalid PR title: ${PR_TITLE}"
         exit 1
 
+    - name: Check PR title
+      if: github.event_name == 'pull_request' && inputs.enforce-conventional-commit != 'true'
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+      shell: bash
+      run: echo "PR title check is disabled"
+
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
       id: version
