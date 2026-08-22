@@ -1,6 +1,7 @@
 name: Increment Version
 description: Increment semantic version and create a new tag
 
+# type: is not supported for action inputs
 inputs:
   dry-run:
     description: Skip tag creation and only output new version
