@@ -4,7 +4,6 @@ description: Increment semantic version and create a new tag
 inputs:
   dry-run:
     description: Skip tag creation and only output new version
-    type: boolean
     required: false
     default: false
   tag:
@@ -12,12 +11,10 @@ inputs:
     required: false
   aliases:
     description: Create / update alias tags for major and minor versions
-    type: boolean
     required: false
     default: false
   prefix:
     description: Tag prefix
-    type: string
     required: false
 
 outputs:
