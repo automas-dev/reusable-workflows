@@ -21,12 +21,12 @@ on:
         description: Prefix used when creating tags
         type: string
         required: false
-      # TODO uncomment after action is merged
-      # enforce-conventional-commit:
-      #   description: Enforce conventional commit PR title format
-      #   type: boolean
-      #   required: false
-      #   default: false
+        # TODO uncomment after action is merged
+        # enforce-conventional-commit:
+        #   description: Enforce conventional commit PR title format
+        #   type: boolean
+        #   required: false
+        #   default: false
 
     outputs:
       current-version:
