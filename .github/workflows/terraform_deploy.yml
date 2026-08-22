@@ -67,15 +67,13 @@ jobs:
         run: |
           terraform init \
             -backend-config="bucket=$BUCKET" \
-            -backend-config="access_key=$ACCESS_KEY" \
-            -backend-config="secret_key=$SECRET_KEY" \
             -backend-config="endpoints={s3=\"https://${ACCOUNT_ID}.r2.cloudflarestorage.com\"}"
         working-directory: ${{ inputs.working-directory }}
         env:
           ACCOUNT_ID: ${{ vars.TFSTATE_ACCOUNT_ID }}
           BUCKET: ${{ vars.TFSTATE_BUCKET }}
-          ACCESS_KEY: ${{ secrets.TFSTATE_ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.TFSTATE_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.TFSTATE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TFSTATE_SECRET_KEY }}
 
       - name: Terraform Validate
         run: terraform validate
