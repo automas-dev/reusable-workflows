@@ -21,10 +21,6 @@ inputs:
     description: Enforce conventional commit PR title format
     required: false
     default: false
-  conventional-commit-add-label:
-    description: Add label to PR when enforcing conventional commit title format
-    required: false
-    default: false
 
 outputs:
   current-version:
