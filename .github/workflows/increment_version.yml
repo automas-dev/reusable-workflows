@@ -37,6 +37,9 @@ jobs:
   increment_version:
     name: Increment Version
     runs-on: ubuntu-latest
+    concurrency:
+      group: increment-version
+      cancel-in-progress: false
 
     permissions:
       contents: write
