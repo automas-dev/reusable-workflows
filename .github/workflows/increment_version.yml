@@ -21,6 +21,7 @@ on:
         description: Prefix used when creating tags
         type: string
         required: false
+      # TODO uncomment after action is merged
       # enforce-conventional-commit:
       #   description: Enforce conventional commit PR title format
       #   type: boolean
@@ -65,4 +66,5 @@ jobs:
           tag: ${{ inputs.tag }}
           aliases: ${{ inputs.aliases }}
           prefix: ${{ inputs.prefix }}
+          # TODO uncomment after action is merged
           # enforce-conventional-commit: ${{ inputs.enforce-conventional-commit }}
