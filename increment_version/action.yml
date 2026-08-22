@@ -17,6 +17,14 @@ inputs:
   prefix:
     description: Tag prefix
     required: false
+  enforce-conventional-commit:
+    description: Enforce conventional commit PR title format
+    required: false
+    default: false
+  conventional-commit-add-label:
+    description: Add label to PR when enforcing conventional commit title format
+    required: false
+    default: false
 
 outputs:
   current-version:
@@ -32,6 +40,14 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: PR Conventional Commit Validation
+      uses: ytanikin/pr-conventional-commits@1.4.0
+      if: inputs.enforce-conventional-commit == 'true'
+      with:
+        # Matching reecetech/version-increment
+        task_types: '["feat","fix","docs","test","ci","refactor","perf","chore","revert","build","style"]'
+        add_label: ${{ inputs.conventional-commit-add-label }}
+
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
       id: version
