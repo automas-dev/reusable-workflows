@@ -40,13 +40,20 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: PR Conventional Commit Validation
-      uses: ytanikin/pr-conventional-commits@1.4.0
-      if: inputs.enforce-conventional-commit == 'true'
-      with:
-        # Matching reecetech/version-increment
-        task_types: '["feat","fix","docs","test","ci","refactor","perf","chore","revert","build","style"]'
-        add_label: ${{ inputs.conventional-commit-add-label }}
+    - name: Check PR title
+      if: github.event_name == 'pull_request' && inputs.enforce-conventional-commit == 'true'
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+      shell: bash
+      run: |
+        prefixes=(feat fix docs test ci refactor perf chore revert build style)
+        for prefix in ${prefixes[@]}; do
+          if [[ ${PR_TITLE} == ${prefix}:* ]]; then
+            echo "Found valid prefix in PR title"
+          fi
+        done
+        echo "[ERROR] Invalid PR title: ${PR_TITLE}"
+        exit 1
 
     - name: Get next version
       uses: reecetech/version-increment@2024.10.1
