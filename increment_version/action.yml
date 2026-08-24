@@ -15,7 +15,7 @@ inputs:
     required: false
     default: false
   prefix:
-    description: Tag prefix
+    description: Prefix used when creating tags
     required: false
 
 outputs:

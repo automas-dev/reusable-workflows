@@ -31,12 +31,12 @@ to create the git tag without generating a new version.
 
 **Inputs**
 
-| Name      | Required | Default | Description                                       |
-| --------- | -------- | ------- | ------------------------------------------------- |
-| `dry-run` | false    | false   | Skip creating a git tag                           |
-| `tag`     | false    |         | Explicit value used for new version tag           |
-| `aliases` | false    | false   | Create version aliases for major / minor versions |
-| `prefix`  | false    |         | Prefix used when creating tags                    |
+| Name      | Required | Default | Description                                                 |
+| --------- | -------- | ------- | ----------------------------------------------------------- |
+| `dry-run` | false    | false   | Skip tag creation and only output new version               |
+| `tag`     | false    |         | Explicit tag value to use instead of generating a new value |
+| `aliases` | false    | false   | Create / update alias tags for major and minor versions     |
+| `prefix`  | false    |         | Prefix used when creating tags                              |
 
 **Outputs**
 
@@ -72,12 +72,12 @@ This is a convenience wrapper of the `Increment Version` action.
 
 **Inputs**
 
-| Name      | Required | Default | Description                                       |
-| --------- | -------- | ------- | ------------------------------------------------- |
-| `dry-run` | false    | false   | Skip creating a git tag                           |
-| `tag`     | false    |         | Explicit value used for new version tag           |
-| `aliases` | false    | false   | Create version aliases for major / minor versions |
-| `prefix`  | false    |         | Prefix used when creating tags                    |
+| Name      | Required | Default | Description                                                 |
+| --------- | -------- | ------- | ----------------------------------------------------------- |
+| `dry-run` | false    | false   | Skip tag creation and only output new version               |
+| `tag`     | false    |         | Explicit tag value to use instead of generating a new value |
+| `aliases` | false    | false   | Create / update alias tags for major and minor versions     |
+| `prefix`  | false    |         | Prefix used when creating tags                              |
 
 **Outputs**
 

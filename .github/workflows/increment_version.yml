@@ -18,7 +18,7 @@ on:
         required: false
         default: false
       prefix:
-        description: Tag prefix
+        description: Prefix used when creating tags
         type: string
         required: false
 
