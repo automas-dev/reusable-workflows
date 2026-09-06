@@ -119,6 +119,7 @@ jobs:
 | `git-tag`           | false    |           | Git version tag type                                      |
 | `increment-version` | false    | true      | Increment version tag instead of using git-tag input type |
 | `working-directory` | false    | terraform | Location of terraform code type                           |
+| `version-aliases`   | false    | false     | Create / update alias tags for major and minor versions   |
 
 **Repo Variables**
 
