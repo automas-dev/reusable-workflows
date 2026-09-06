@@ -150,6 +150,31 @@ regardless of the `increment-version` input and will not be altered by the
 | `current-version` | The previous git tag |
 | `version`         | The new version      |
 
+## Check Job
+
+The `check` job uses [re-actors/alls-green](https://github.com/re-actors/alls-green)
+to evaluate the results of its dependencies.
+
+```yaml
+jobs:
+  lint:
+    ...
+
+  test:
+    ...
+
+  check:
+    runs-on: ubuntu-latest
+    if: always()
+
+    needs: [lint, test]
+
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
+```
+
 ## How to use actions and workflows
 
 Reusable actions and workflows are included using the github user / repo names
